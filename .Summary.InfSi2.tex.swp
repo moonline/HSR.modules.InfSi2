@@ -110,11 +110,96 @@ urlcolor=black
 \tableofcontents
 \clearpage
 
+\ch{Repetition}
 
+\se{Kryptographische stärke im 2013}
+\exam{Schlüsselstärken wissen an Prüfung}
 
+\ul
+	\li Symetrische Verschlüsselung: 
+		\ul
+			\li AES \textbf{128bit}, 192bit, \textbf{256bit} \\
+			\ra Es gibt keine Shortcut Attacken bei 128, nur Brute Force. 256 und 192 haben jeweils eine etwas kleinere Stärke (ca 220, 180) weil man durch das verwendete Gleichungssystem etwas effizienter als mit Brute Force angreifen kann.
+			\li Twofish 
+			\li 3DES 168bit (3x56bit) \ra Stärke 112bit (doppelte DES Veschlüsselung) \\
+				\ra Es gibt eine Attacke von beiden Enden her, darum braucht 3DES in der Mitte noch die 3. DES Verschlüsselung und kommt auf eine Stärke von doppeltem DES
+			\li Camellio
+		\ulE
+	\li Data Integrity (Hash): 
+		\ul
+			\li SHA-3 (Keccak) 224, 256, 384, 512bit \\
+				\ra auf 64Bit Rechnern ist 512bit schneller als 256bit
+			\li \textbf{SHA-2 (NIST)}
+		\ulE
+	\li Key Exchange (between peers):
+		\ul
+			\li DH \textbf{2048bit}, 1576bit \\
+			\ra Aufwand wächst gegenüber symetrischen Verfahren mit der 3.Potenz des Modulus der Primzahl, daher Key viel länger
+		\ulE
+	\li Digital Signature: 
+		\ul
+			\li RSA \textbf{2048bit}, 4096bit \\
+			\ra Root Server, die ein Zertifikat für 20 Jahre lösen, verwenden schon heute 4096
+			\li DSA (Digital Signature Algorithm, erlaubt nur zu verschlüsseln nicht zu signieren) \\
+			\ra mit eliptischen Kruven: ECDSA
+		\ulE
+	\li Public Key:
+		\ul
+			\li RSA 2048bit, 4096bit für langjährige Ausrichtung
+			\li El Gamal (verwandt mit DH) 2048bit
+		\ulE
+	\li User Password: 22 Zeichen \ra 128bit, 12 absolutes Minimum
+\ulE
 
+\se{NSA Suites}
+\img{img/v1.1.jpg}{NSA Suite B 128bit security (CONFIDENTIAL)}{0.75}{}
+\img{img/v1.2.jpg}{NSA Suite B 192bit security (SECRET)}{0.75}{}
 
+Alle Verfahren sollen gleich stark sein, damit es kein schwächstes Verfahren in der Kette gibt.
 
+\ch{Elliptische Kurven}
+\img{img/v1.3.jpg}{}{0.75}{}
+\ul
+	\li Polynom 3. Grades
+	\li EC sind immer spiegelsymetrisch zur X-Achse, weil Quadratwurzeln immer zwei Lösungen besitzen
+	\li Gute elliptische Kurve: Keine Nullstellen fallen zusammen, x\^3 besitzt 3 unterschiedliche Nullstellen.
+	\li Operationen müssen Assoziativ sein
+	\li Oft auch Kommutativ
+\ulE
+
+\expl{Algebraische Gruppe}{Zahlensystem, in dem bestimmte Regeln gelten. 
+	\ul
+		\li Wendet man auf Gruppenmitglieder Operationen an, so liegt das Resultat wieder innerhalb der Gruppe
+		\li Jede Gruppe besitzt ein neutrales Element e
+		\li Jede Gruppe besitzt ein inverses Element a
+	\ulE}
+\img{img/v1.4.jpg}{}{0.75}{}
+\img{img/v1.5.jpg}{Punkte auf einer elliptischen Kurve, die eine Gruppe bilden}{0.75}{}
+\ul
+	\li Alle Elemente, die auf einer elliptischen Kruve liegen, bilden eine algebraische Gruppe.
+	\li Gearbeitet wird mit Punktaddition:
+		\ul
+			\li Punkte werden mti Linie verbunden \ra neuer Punkt auf Line \ra spiegelung davon is Resultat
+		\ulE
+	\li Der Punkt im Unendlichen ist das neutrale Element
+	\li P + das neutrale Element ergibt wieder P
+	\li Um wie mit DH damit arbeiten zu können, muss ich einen Punkt mehrmals zu sich selbst addieren
+\ulE
+\img{img/v1.6.jpg}{Neutrales und inverses Element}{0.75}{}
+\img{img/v1.7.jpg}{Punkt duplikation - einen Punkt zu sich selbst addieren}{0.75}{}
+\img{img/v1.8.jpg}{Punkt Iteration, Addieren eines Punktes k-1 mal zu sich selbst}{0.75}{}
+\img{img/v1.9.jpg}{}{0.75}{}
+
+\se{Praktische Anwendung}
+\img{img/v1.10.jpg}{}{0.75}{}
+\ul
+	\li Kurve wird bekannt gegeben: Primzahl b, Parameter a,b
+	\li Startpunkt P auf Kurve wird auch bekannt gegeben
+	\li Bob und Alis wählen eine Zahl a, die bestimmt, wie viel mal P mit sich selbst addiert wird \ra Bildpunkt 
+	\li Bildpunkt wird öffentlich übertragen
+	\li aus den übertragenene Elementen kann nur mit sehr grossem Aufwand a berechnet werden
+	\li das Wachstum der geheimnisse a und b korreliert fast linear mit der Verschlüsselungsstärke
+\ulE
 
 
 \end{document}
