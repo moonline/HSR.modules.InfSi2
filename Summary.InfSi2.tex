@@ -209,4 +209,106 @@ Alle Verfahren sollen gleich stark sein, damit es kein schwächstes Verfahren in
 \ulE
 
 
+\ch{Physical Layer Security}
+Früher Verwendet:
+\ul
+	\li Voice Scrambling (Time Multiplex)
+	\li Frequency Hopping
+\ulE
+
+\se{Quantenkryptographie}
+Splitten von Photonen in zwei Photenen, die verschränkt sind.
+\img{img/v2.1.jpg}{}{0.75}{}
+\expl{Polarisiertes Licht}{Nach dem horizontalen oder vertikalen elektrischen Feld ausgerichtetes Licht}
+\ul
+	\li Nicht gemessene Photonen haben beide polarisierten Zustände
+	\li Zwei Set von Filter: 0°, 90° (Sieht aus wie ein Schweizerkreuz) und 45°, 115°.
+	\li Messen Empfänger und Sender gleich (polarisiert), so haben die beiden Photonen den gleichen Zustand.
+	\li 2. Zufallsmessung
+	\li Horcht jemand mit, so verändert er damit den Quantenzustand und die beiden Kommunikationsteilnehmer bemerken dies. \ra Bob erhält kein Photon
+	\li Klaut Eve das Photon und speist ein anderes ein, so funktioniert dies nicht, weil verschränkte Photonen nicht dupliziert werden können.
+	\li Diese Quanten laufen über eine sepparate Glasphaser
+	\li Kommunikationsparter teil sich nicht mit, was sie gemessen haben, sondern mit welchen Filterset. Haben SIe mit unterschiedlichen Filtersets gemessen, so werden diese Photonen verworfen. \ra 50\% Ausschuss
+	\li Wegen diesen 50\% Verwurf kann der Quantenkanal nicht für Streamcipher verwendet werden. Zudem ist der Schlüsselstrom ziemlich niederratig. \ra Quantenkanal wird nur für Session-Schlüsselaustausch verwendet.
+	\li Problem mit Distanz: Repeathen nicht möglich.
+\ulE
+
+\se{BB84 Key Distribution System}
+\ul
+	\li Alice erzeugt normalePhotonen und sendet diese an Bob
+	\li Photon wird moduliert
+	\li Bob wählt zufällig Filterset
+	\li Wenn Eve ein Photon klaut, kriegt Bob keines
+	\li Nach gewisser Anzahl Photonen tauschen Bob und Alice das verwendete Filterset aus und Alice gibt die Modulation bekannt (orthogonal / 45° verschoben). \ra Nicht passende Filtersets werden verworfen
+	\li Speist Eve zusätzliche Photonen ein, so kann dies detektiert werden
+	\li Es ist praktisch unmöglich einen Laser zu bauen, der nur ein Photon ausgibt
+	\li Problematisch, wenn der Laser mehr als ein Photon ausgibt, weil Eve dann eines der Photonen klaut. \ra Eve klaut natürlich immer eines, daher erhält Bob nur die Photonen, die mehrfach ausgesendet werden.
+	\li Dämpfung in der Glasfaser: bei 10dB Dämpfung kommen nur noch 10\% an, bei 20db nur 1\%.
+	\li Maximale Distanz: 1000km \ra 30dB Dämpfung
+	\li Daher ist die Netodatenrate sehr tief und es fällt gar nicht auf, wenn Eve Photonen klaut.
+\ulE
+
+\img{img/v2.2.jpg}{}{0.75}{}
+
+\sse{Erhältliche Systeme}
+\img{img/v2.3.jpg}{Layer 2 Encription with Quantum Key Distribution}{0.75}{}
+\ul
+	\li Untersten Kanal ist Key Distribution Kanal (1Key/min)
+	\li Basierend auf RR84 und SARG, bis 50km Distanz zwischen Ersatz Rechenzentrum
+	\li 10Gbit/s mit AES-256
+\ulE
+\img{img/v2.4.jpg}{}{0.75}{}
+
+
+\se{Schlüssel Material und Randoom Nummern}
+\img{img/v2.5.jpg}{HMAC}{0.75}{}
+\ul
+	\li Dokument wird zusammen mit Key gehashed und das ganze erneut mit Outerkey zu MAC verarbeitet.
+\ulE
+\img{img/v2.6.jpg}{PRF pseudo randoom function}{0.75}{}
+\ul
+	\li Seed wird gehashed mit Secret zusammen
+	\li Autput wird erneut als Input für Hash verwendet
+	\li So wird Stück für Stück genügend Zufallsmaterial generiert
+	\li Zur Sicherheit wird jeder Output am Schluss erneut gehashed, damit nicht auf den vorherigen Output zurückgeschlossen werden kann
+	\li Entropie des keys (Secret) wird ``verdünnt'' auf den ganzen Bitstream \ra nimmt nicht zu
+\ulE
+\exam{PRF}{Funktion nicht genau kennen, nur wissen dass es ein Verdünnen von Schlüsselmaterial ist}
+
+\sse{TLS1.1 Master secret}
+\img{img/v2.7.jpg}{TLS 1.1 Master Secret Berechnung}{0.75}{}
+\ul
+	\li Premastersecret (echte Entropie) wird aufgeteilt und erste Hälfte durch PRF-MD5 durchgelassen, zweite Hälfte durch PRF-SHA-1 durchgelassen. \\
+	 \li Grund dafür: Angst vor Fall von MD5, Angst vor Backdoor in SHA-1
+	 \li Beide Teile werden anschliessend verknüpft
+\ulE
+\img{img/v2.8.jpg}{Generating TLS 1.1 Key Material}{0.75}{}
+
+
+\se{Generieren von wahren randoom Numbers}
+\ul
+	\li Zeicheneingabe von Tastatur besitzt wenig Entropie \ra Verwendet wird die Zeit zwischen den Tastenschlägen
+	\li Mausbewegung
+	\li Rauschen aus der Soundkarte
+	\li Zugriffszeiten auf die Harddisk (Schwankungen durch Luftturbulenzen in echanischen HD's)
+	\li Am Besten möglichst viele Quellen zusammenhashen
+\ulE
+\important{Hashen erhöht die Entropie nicht! Verbessert nur die Statistik}
+\expl{Entropie Generator Ausfall}{Muss detektiert werden, weil sonst ein Strom mit null Entropie empfangen wird.}
+
+\sse{Hardware basierte wahre Random Generatoren}
+\ul
+	\li Jeder Halbleiter rauscht \ra Auf Prozessor wird Diode gesetzt, die durch Rauschen Zufallszahlen erzeugt
+	\li Thermal Nose Sources
+\ulE
+
+\img{img/v2.9.jpg}{Photonengenerator, dessen Strom durch Spiegel umgelenkt werden}{0.75}{}
+
+\sse{Randomness überprüfen und korrigieren}
+\ul
+	\li Problem: zu viele Nullen \ra Bits werden nach Auftrittswahrscheinlichkeit substituiert.
+	
+\ulE
+
+
 \end{document}
