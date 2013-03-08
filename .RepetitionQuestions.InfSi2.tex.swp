@@ -136,20 +136,8 @@ urlcolor=black
 
 \ch{Data Link Layer Security}
 \olR
-	\li Erklären Sie wie die Authentisierung bei EAP mit Radius Server funktioniert.
-	\li Was ist die Secure Device ID (DecID)? Wozu kann sie verwendet werden? Können Sie die DevID verändern? begründen Sie. Welche weiteren Informationen / Elemente sollte das DevID Modul noch beinhalten?
-	\li Was ist eine Connectivity Association? Welchen Vorteil bieten Secure Channel und Secure Association?
-	\li Wie ist das MACsec Frame Format aufgebaut? Erklären Sie die Felder SecTag, Secure Data, ICV.
-	\li Wie funktioniert die Key Distribution mit MKA, SAK und CAK?
-	\li Wie können Sie mit EAP dynamische CAK's ermöglichen?
+	\li 
 \olS
-
-
-
-
-
-
-
 
 
 \end{document}
