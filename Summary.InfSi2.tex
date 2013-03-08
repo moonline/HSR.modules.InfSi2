@@ -303,12 +303,96 @@ Splitten von Photonen in zwei Photenen, die verschränkt sind.
 \ulE
 
 \img{img/v2.9.jpg}{Photonengenerator, dessen Strom durch Spiegel umgelenkt werden}{0.75}{}
+\img{img/v2.10.jpg}{}{0.75}{}
 
 \sse{Randomness überprüfen und korrigieren}
 \ul
 	\li Problem: zu viele Nullen \ra Bits werden nach Auftrittswahrscheinlichkeit substituiert.
-	
 \ulE
+
+\ch{Data Link Layer Security}
+\se{EAP}
+\img{img/v3.1.jpg}{Gerät ist entweder Suplicant oder Authentiater (Antragsteller oder Authentifizierer)}{0.75}{}
+
+\definition{EAPOL}{EAP over LAN}
+Gewünscht: Verschlüsseln der Trunkleitung zum Radiusserver
+
+\se{IEEE 802.1AR -DevID}
+\definition{DevID}{Secure Device ID}
+\ul
+	\li Jedes Gerät wird ab Werk mit Schlüssel für EC, RSA ausgeliefert
+	\li In einem Rom gespeichert, kann nicht gelöscht werden
+	\li Bereits ein Zertifikat gespeichert, welches vom Hardwarehersteller signiert wurde
+	\li Lokaler Administrator kann beliebig viele Device ID's hinzufügens
+	\li Befindet sich in geschütztem Chip
+\ulE
+\img{img/v3.2.jpg}{}{0.75}{}
+\ul
+	\li SHA 256 vorgeschrieben
+	\li ANwendungen: EAP-TLS Authentisierung (Nicht User ID sondern Device ID)
+	\li Mit TPM haben die meissten PC's bereits heute Möglichkeiten für eine DeviceID
+\ulE
+
+\se{MAC Layer Security}
+\ul
+	\li Verschlüsselung muss effizient sein wegen häufigem rekeying
+	\li Bestimmte Benutzer werden zu Gruppen zusammengefast (Connectivity Association)
+\ulE
+\definition{CAK}{Connectivity Authentication Key}
+\img{img/v3.3.jpg}{CA}{0.5}{}
+\img{img/v3.4.jpg}{Secure Channel für jede Verbindung zwischen den Teilnehmern}{0.5}{}
+\ul
+	\li Jeder Channel besitzt einen eigenen Schlüssel (Channel sind gerichtet)
+	\li Schlüsselwechsel muss fliegend geschehen können: Pakete werden mit altem Schlüssel verschlüsselt und irgendwann wird gewechselt
+	\li Jedes Paket enthält Channel und welcher Schlüssel zum Entschlüsseln verwendet werden soll
+\ulE
+\img{img/v3.5.jpg}{Association Number legt fest, ob alter oder neuer Key verwendet wurde}{0.75}{}
+
+\sse{Sonderfall Peer-Peer, Peer-AP}
+\img{img/v3.6.jpg}{}{0.75}{}
+
+\sse{MAC sec}
+\img{img/v3.7.jpg}{MAC sec Frame Format}{0.75}{}
+\ul
+	\li Security Tag: 8Byte oder 16Byte
+	\li VErschlüsselung: Paket wird mit AES im Countermode verschlüsselt
+	\li ICV ist MAC, krypt. Checksumme (16Byte)
+	\li Ethernet Frame wird gesprengt wie bei getaggten VLAN Paketen
+	\li FCS: Checksumme auf Bitfehler
+\ulE
+
+\img{img/v3.8.jpg}{SecTag Format}{0.75}{}
+\ul
+	\li Ethertype für MACSec (> 1500)
+	\li im TCI ist definiert, ob SCI (Secure Channel Identifiert) mitgeschickt wird \\
+	\ra Wenn SCI aus der MAC Adresse berechnet werden kann, kann er weggelassen werden
+	\li Hash von SCI wird übertragen, auch wenn SCI nicht übertragen wird
+	\li Wenn Paket zu kurz für Kollisionsdetektion, wird Tagging NACH dem ICV eingefügt \\
+		\ra Problem bei Ethernet ohne Längenfeld: Wo beginnt das Padding? Chechsumme falsch \ra Secure TAG enthält Länge im SL (Short Length) Field (Feld gibt an, wenn Paket kürzer als 64Byte, wie lange es ist)
+	\li schutz gegen Replay Attacken: PN Feld enthält Paket Number
+\ulE
+
+\img{img/v3.9.jpg}{TCI - TAG Control Information}{0.75}{}
+\ul
+	\li Wenn Bit E gesetzt: Verschlüsselung, sonst nur Checksum
+\ulE
+
+\img{img/v3.10.jpg}{Verschlüsselung im AES Counter Mode, SAK und CAK bieten 128bit \ra durchgehend gleiche Verschlüsselungsstärke}{1}{}
+
+\sse{MKA distributes random SAK using CAK}
+\img{img/v3.11.jpg}{}{0.75}{}
+\ul
+	\li SAK wird für Hashing und Verschlüsselung gebraucht
+	\li Hilfsschlüssel KEK werden zur Verteilung gebraucht
+	\li Jeder Teilnehmer der Connectivity Association trägt einen Teil zum SAK bei
+	\li CAK lebt für Jahre im Switch
+	\li KEK wird abgelegt und auch ewig verwendet
+	\li 
+\ulE
+
+
+
+
 
 
 \end{document}
