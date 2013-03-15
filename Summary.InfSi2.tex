@@ -399,6 +399,103 @@ Gewünscht: Verschlüsseln der Trunkleitung zum Radiusserver
 \img{img/v3.12.jpg}{Pairwise CAKs usage to to distribute a Group CAK}{0.75}{}
 
 
+\ch{Applicationsecurity}
+\se{OWASP}
+\sse{Zugriffsprinzipien}
+5A:
+\ul
+	\li Accounting
+	\li Allerting
+	\li Auditing
+	\li Authenticate
+	\li Access Controll
+\ulE
+\img{img/v4.1.jpg}{}{0.75}{}
+
+\sse{Identifizierung und Authentisierung}
+\img{img/v4.2.jpg}{Web Architektur}{0.75}{}
+\ul
+	\li Http hat kein Gedächnis. Kann die aufeinanderfolgenden Requests nicht in Verbindung bringen. Mit übermittelten Sessionkeys können die Endstationen dies gewährleisten.
+	\li Vorne (Tier1-Tier2) weiss man noch wer es ist, beim Zugriff auf Tier 3 wird es dann vergessen! \ra Angriffsmöglichkeit
+\ulE
+
+\sse{Sicherheitstechnologien}
+% Folie mit Technologien (12) aus Lösungssatz
+\ul
+	\li TLS: Attacken auf alte Versionen, Falsches Zertifikat erzeugt Warnung, die einfach weggeklickt werden kann
+	\li Authentication: What you have: bsp SMS, What you know: bsp Passwort, what you are: bsp Iris
+\ulE
+\img{img/v4.3.jpg}{OWASP Appsec Tutorial Series Episode 1}{0.75}{}
+\exam{WHITEHAT SECURITY WEBSITE STATISTICS REPORT (How Does Your Website Security
+	Stack Up Against Your Peers?), Summer 2012, 12th Edition \ra Prüfungsrelevant
+	\img{img/v4.4.jpg}{Web Application Security Status}{0.5}{}
+}
+\exam{Fortsetzung:
+	\img{img/v4.5.jpg}{likelihood that at least one vulnerability will appear in a website 	}{0.75}{}
+	\img{img/v4.6.jpg}{Window of Exposure (2010)}{0.75}{}
+}
+
+\sse{CIA-Sicherheitsprobleme}
+\ul
+	\li Confidentiality: Jemand kann Daten anschauen auf dem Server, die nicht für ihn bestimmt sind (Passwörter, Domain verwalten, ...)
+		\ul
+			\li \textbf{Besonders schützenswerte Daten gemäss Gesetz}: Gesundheitsdaten, Rassenzugehörigkeit, Religionszugehörigkeit, Straffälle \ra müssen Verschlüsselt werden
+			\li Kreditkarteninformationen fallen NICHT unter das Personendatenschutzgesetz.
+			\li Nur Schützenswerte Daten müssen vom Betreiber nicht verschlüsselt werden.
+			\li Datenschutz und Personendatenschutz (Person vor Missbrauch dieser Daten schützen) sind zwei komplett unterschiedliche Dinge!
+		\ulE
+	\li Integrity: 
+		\ul
+			\li Jemand kann Inhalte auf dem Server verwändern
+			\li Nutzung des Webservers als Plattform zum Angriff anderer Rechner bzw. User
+		\ulE
+	\li Availability: Attacke legt Server lahm
+\ulE
+\img{img/v4.7.jpg}{ OWASP Top 10 Risk Rating Methodology}{0.75}{}
+
+\sse{Risikoberechnung}
+\img{img/v4.8.jpg}{OWASP Threat Agent = Capabilities + Intentions + Past Activities}{0.75}{}
+
+\sss{Verletzlichkeitsfaktoren}
+\ul
+	\li  Ease of discovery
+ 	\li Ease of exploit
+ 	\li Awareness
+ 	\li Intrusion detection
+\ulE
+
+\sss{Technical Impact}
+\ul
+	\li  Loss of confidentiality
+ 	\li Loss of integrity
+ 	\li Loss of availability
+ 	\li Loss of accountability
+\ulE
+
+\sss{Business Impact Factor}
+\ul
+	\li Financial damage
+ 	\li Reputation damage (Image, Medien)
+ 	\li Non-compliance (Verträglich zu Gesetzen und Regeln, Erfüllen von Richtlinien)
+ 	\li Privacy violation (Personenfaten)
+\ulE
+
+
+\sse{Security Testing Guide}
+\img{img/v4.9.jpg}{}{0.5}{}
+\img{img/v4.10.jpg}{}{0.5}{}
+\img{img/v4.11.jpg}{}{0.75}{}
+\img{img/v4.12.jpg}{}{0.75}{}
+\img{img/v4.13.jpg}{}{0.75}{}
+
+
+
+
+
+
+
+
+
 
 
 
