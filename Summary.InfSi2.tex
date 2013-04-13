@@ -489,6 +489,238 @@ Gewünscht: Verschlüsseln der Trunkleitung zum Radiusserver
 \img{img/v4.13.jpg}{}{0.75}{}
 
 
+\ch{Webanwendungssicherheit}
+\img{img/v5.1.jpg}{}{0.75}{}
+\uli{
+	\li Die meissten Angriffe finden heute auf Anwendungsschicht statt.
+	\li Keine sprechenden Fehlermeldungen im Frontent ausgeben.
+}
+
+\se{Injection}
+\expl{Injection}{Jede Beschreibungssprache ist durch Injections verwundbar.}
+\img{img/v5.2.jpg}{Protocols}{0.75}{}
+\img{img/v5.3.jpg}{SQL Injection}{0.75}{}
+\sse{Mögliche Lösungen}
+\uli{
+	\li Whitelist / Blacklist Patterns (Filtern)
+	\li Prepared Statements
+	\li Stored Procedures
+	\li Escaping: Verhindern, dass Angreifer die Zeichen verwendet, die ihm den Wechsel von den Daten in die Beschreibungssprache ermöglichen.
+	\li Least Privileges
+}
+\expl{Injection ohne Fehlermeldung}{Auch wenn keine Fehlermeldung ausgegeben wird, die hilfreich ist, kann man durch die Aufrufzeit Informationen erhalten \ra Wenn Passwort falsch braucht die Applikation möglicherweise länger als wenn Username falsch oder wenn alles Falsch geht es sehr schnell}
+
+
+\sse{Wichtige Hash Parameter}
+\definition{Hash Funktion}{[pre-Image]\ra(f)\ra[image]}
+\uli{
+	\li Collision resistence (Zwei beliebige Inputs dürfen nicht den gleichen Hash bilden)
+	\li One Way
+	\li Pre-Image resistence
+	\li Second Pre-Image resistence (Ein zweites finden, dass den gleichen Hash bildet
+}
+
+
+\se{Authentisierung \& Session Management}
+\expl{Unterschied Authentisierung und Autorisierung}{Authentisierung: Identitätstest (Was ich bin, habe und weiss), : Autorisierung: Erlaubte Aktionen ermitteln (Autor von welchen Aktionen)}
+\definition{Basic Auth}{Browser schickt jedes Mal Zugangsdaten wieder mit. Es gibt keine Session}
+\definition{DigestAuth}{Challenge / Respone}
+\expl{Challenge Response Funktion}{
+	\oli{
+		\li Server generiert zufällige Challenge
+		\li Client Hasht Passwort+Challenge
+		\li Server überprüft Hast
+	}
+}
+\definition{Form-Based Authentisierung}{Klassisch Eingabefeld mit Username/Password}
+\definition{TLS-Based Authentitiserung}{Client Verschlüsselt Server Token mit Zertifikat, Server Überprüft Signatur mit Public Key von Client \ra Certificate Chain muss stimmen}
+
+\sse{History-Back}
+\uli{
+	\li History-Back im Browser ermöglicht einem späteren Nutzer nochmal mit Benutzerdaten des vorherigen Users einzuloggen.
+	\li Lösung: Nach Login Redirect vornehmen (Browser merkt sich bei Redirect POST Daten nicht)
+}
+
+\expl{Passwort error Delay}{Verzögerung bei falschem Passwort. Angriffsmöglichkeit: Passwort beibehalten und user durchprobieren.}
+
+\sse{Session Attacks}
+\uli{
+	\li Session Sniffing
+	\li Sessin Guessing
+	\li Session Cache Stealing
+	\li Session Fixation
+	\li Session Hijacking
+	\li Session Stealing Prevention
+}
+
+
+\ch{Anonymität}
+Warum brauche ich Anonymität:
+\uli{
+	\li Wahrung der Privatsphäre
+	\li Redefreiheit
+	\li Anonyme Marktforschung
+	\li Anonyme Informationssammlung
+	\li Whistle-blowing
+}
+
+\se{Pseudonym}
+\uli{
+	\li E-mail Verkehr wird über zwischenstation umgeleitet
+	\li Remailer entfernt sämtliche Spuren der ursprünglichen Identität
+	\li Problem: Single Point of Vulnerability \ra Wenn Behörde Server beschlagnahmt, ist die Anonymität im Eimer
+}
+\img{img/v6.1.jpg}{}{0.75}{}
+
+\se{Anonymisierungsnetzwerk (David Chaum's Cascade of Mixes)}
+\uli{
+	\li Verteilte Pseudonymserver
+	\li Anonymisierungsnetzwerk
+	\li Der Benutzer wählt \textbf{zufällig} einen Weg durch das Netzwerk \ra nur der Benutzer weis den Weg
+	\li über Entry Knoten tritt Benutzerin Netzwerk ein, über Exit aus dem Netzwerk aus
+	\li Der Exitknoten wird als erstes von einem Gericht in die Mangel genommen, wenn ein straffälliger Vorfall geschehen war.
+	\li Knoten sollten möglichst in unterschiedlichen Ländern sein \ra Erschwert Rechtshilfegesuche
+	\li Wenn der Datenverkehr verschlüsselt ist, so läuft ein Rechtshilfegesuch natürlich ins Leere.
+}
+\img{img/v6.2.jpg}{Benutzer wählt Kette A, E, C}{0.75}{}
+\img{img/v6.3.jpg}{destom mehr Verkehr, desto Anonymer ist man unterwegs}{0.75}{}
+
+
+\sse{Untraceability by using Public Key Cryptography}
+\uli{
+	\li Nachrichten können bereits an ihrer Meldungslänge erkannt werden \ra Kurze Meldungen werden auf 512 Byte gepadded, lange fragmentiert
+}
+\img{img/v6.4.jpg}{}{0.75}{}
+\oli{
+	\li Datenverkehr wird auf dem Client verschlüsselt mit PK des Exit Knoten \ra Exit Knoten kriegt Inhalt mit, wenn der Verkehr nicht End-zu-End Verschlüsselt ist.
+	\li Nachricht inkl. Destinationsadresse von Exitknoten wird mit PK von C verschlüsselt
+	\li Nachricht inkl. Destinationsadresse von C wird mit PK von E verschlüsselt.
+	\li Nachricht inkl. Dest. Addr. von E wird mit PK von Entryknoten verschlüsselt.
+}
+
+\sse{Entschlüsselung}
+\oli{
+	\li A entfernt seine Adresse \ra Frei werdener Platz wird mit Zufallspadding gefüllt, anschliessend wird die Nachricht entschlüsselt
+	\li E entfernt wieder seine IP, hängt Padding an und entschlüsselt Inhalt.
+	\li ...
+}
+
+\sse{Mix KnotenFunktionen}
+\img{img/v6.5.jpg}{}{0.5}{}
+\uli{
+	\li Entschlüsseln des Datenverkehrs
+	\li Zeitliches mischen der Anfragen/Ausgaben \ra Eingehende Pakete können nicht mit Ausgehenden korreliert werden, weil sie in zufälliger Reihenfolge rauskomen
+	\li Doppelte Pakete löschen (Replay Attacken) \\ Ein Anfreifer könnte ein eingehendes Paket kopieren und nochmal einspeisen. Durch überwachung des Ausgangsverkehr kann er anhand des doppelten Ausgangspaketes das Eingangspaket dem Ausgangspaket zuordnen
+}
+
+\sse{Antwort}
+\uli{
+	\li Retourverschlüsselung sehr komplexs
+}
+
+\sse{High Latency Anonymizer}
+\uli{
+	\li Grosser Puffer
+	\li lange Verzögerung
+	\li ziemlich sicher
+}
+
+\sse{Low-Latency Anonymizers}
+\uli{
+	\li Anfällig gegen Knotenüberwachung
+	\li Man darf nicht zu lange die gleiche Kette bauchen (Tor wechselt häufig die Kette)
+	\li Kleine oder gar keine Resorting Puffer
+}
+
+
+\sse{Tor}
+\uli{
+	\li Ursprünglich von der US Navy entwickelt
+	\li Tor kann alle TCP basierten Dienste anonymisieren
+	\li Setzt DH Sessionschlüssel ein \ra immer frisch generierte Schlüssel
+	\li Es kann beliebig im Pfad ausgestiegen werden \ra Exitknoten weis nicht, das er einer ist
+	\li Onion Proxy: Client, der Nur Verkehr ein speist
+	\li Onion Router: Knoten
+	\li Besser, wenn Cient selber auch Knoten, damit sein eigener Verkehr im Knotenverkehr versteckt ist.
+	\li Zwischen den Knoten verwendet Tor TLS
+}
+\img{img/v6.6.jpg}{}{0.75}{}
+\img{img/v6.7.jpg}{Tor Datenformat}{0.75}{}
+\uli{
+	\li Innerhalb des Netzwerkes gibt es ein standartisiertes Datenformat
+	\li Datenverkehr wird auf dem gleichen Pfad wieder zurück gesendet
+	\li Stream ID gilt End-zu-End
+	\li CircID ermöglicht Zuordnung bei jedem Knoten zwischen Hin- und Retourverkehr
+	\li Stream ID weis nur Exit Knoten
+}
+
+\img{img/v6.8.jpg}{Circuit}{0.75}{}
+\uli{
+	\li Stream ist doppelt verschlüsselt (für jeden Knoten einmal)
+}
+
+\sse{Anonymer Server}
+\img{img/v6.9.jpg}{}{0.75}{}
+\uli{
+	\li Addresssequence muss in Forum bekannt gegeben werden
+	\li User wählt Introduction Point und gibt geschlossenes Paket ab (Addresssequence)
+	\li Introduction Point ist wie Exit Point, weiss jedoch um was es geht 
+	\li Benutzer wählt Rendezvous Point, dieser hat überhaupt keine Ahnung, um was es geht
+	\li Wenn Server antworten möchte, so baut er Verbindung zum Rendezvous Point auf
+	\li Datenverkehr läuft über Rendezvous Point
+}
+
+
+
+\ch{Data Leak Protection}
+\sse{Warum Daten schützen?}
+\uli{
+	\li Vertrauen
+	\li Trade Secret (Geheimhaltung)
+	\li Rechtliche Aspekte
+	\li Bankgeheimnis
+	\li Staatssicherheit (Geheimdienst hat je nach Land das Recht in allen Daten zu stöbern)
+}
+
+\img{img/v7.1.jpg}{Wo befinden sich Daten in einer Firma}{1}{}
+\sse{Data leakage}
+\img{img/v7.2.jpg}{Wo können Daten geleakt werden}{1}{}
+
+\sse{Data Leak Protection}
+\img{img/v7.3.jpg}{}{0.75}{}
+\uli{
+	\li Egress Controll: Was verlässt das Unternehmen
+	\li Usage Control: z.B. DRM
+}
+
+\se{Egress Control}
+\img{img/v7.4.jpg}{Datenkontrolle}{1}{}
+\img{img/v7.5.jpg}{Test Daten Anonymisierungsarten}{0.75}{}
+\img{img/v7.6.jpg}{Egress Control Example}{0.75}{}
+
+\sse{Information Rights Management IRM}
+$IRM = Usage Control + Encryption$ \\
+\ra Controllieren, was mit Informatioin geschieht
+
+\sse{AD RMS}
+\uli{
+	\li Active Directory basiertes Dateisystem-IRM mit MS Office Support
+	\li Rechte werden direkt in der Datei gespeichert
+}
+\img{img/v7.7.jpg}{Publish and Consume Files}{0.75}{}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
