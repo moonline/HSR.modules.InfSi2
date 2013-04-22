@@ -273,7 +273,7 @@ Splitten von Photonen in zwei Photenen, die verschränkt sind.
 	\li Zur Sicherheit wird jeder Output am Schluss erneut gehashed, damit nicht auf den vorherigen Output zurückgeschlossen werden kann
 	\li Entropie des keys (Secret) wird ``verdünnt'' auf den ganzen Bitstream \ra nimmt nicht zu
 \ulE
-\exam{PRF}{Funktion nicht genau kennen, nur wissen dass es ein Verdünnen von Schlüsselmaterial ist}
+\exam{PRF Funktion nicht genau kennen, nur wissen dass es ein Verdünnen von Schlüsselmaterial ist}
 
 \sse{TLS1.1 Master secret}
 \img{img/v2.7.jpg}{TLS 1.1 Master Secret Berechnung}{0.75}{}
@@ -710,19 +710,73 @@ $IRM = Usage Control + Encryption$ \\
 \img{img/v7.7.jpg}{Publish and Consume Files}{0.75}{}
 
 
+\ch{VPN}
 
+\definition{VPN}{Virtual Private Network}
+\se{Point to Point Protocol PPP}
+\stdImg{v8.1}{PPP}
+\uli{
+	\li  Authentication using PAP (password), CHAP (challenge/response), or the
+Extensible Authentication Protocol (EAP) supporting e.g. token cards
+}
+\stdImg{v8.2}{PPP Encryption Control Protocol}
 
+\se{Layer2/3/4 Tunneling}
+\stdImg{v8.3}{L2TP Compulsory Mode} 
+\stdImg{v8.4}{L2TP Voluntary Mode}
+\stdImg{v8.5}{Layer3 tunneling IPsec based}
+\stdImg{v8.6}{L2TP  over IPsec - Voluntary Modes}
+\stdImg{v8.7}{Layer4 Tunnel based on TLS}
+\stdImg{v8.8}{L2/3/4 Tunneling Comparison}
 
+\se{MPLS}
+\definition{MPLS}{Multi Protocol Label Switching}
+\stdImg{v8.9}{MPLS Based VPN}
+\uli{
+	\li VPN Paet erhält im ISP Backbone beim Eintritt vor das IP Paket ein Label. Dadurch kann es ohne Auslesen der IP Informationen geroutet werden.
+	\li Ein weiteres Label definiert den Routingweg und wird von Hop zu Hop verändert
+	\li Label based Routing ist effizienter und ermöglich es einfache statistiken zu erheben
+}
+\stdImg{v8.10}{MPLS L2 Shim Header}
+\uli{
+	\li Shim Header is inserted after the DLL Header and before the IP Header (between L2 and L3)
+	\li Type Of Service Field ist ähnlich dem Type of Service Field des IP Headers
+	\li Das TTL Field übernimmt die gleiche Funktion wie das Time To Live Field des IP Headers
+}
 
+\se{IPsec Transport Mode}
+\stdImg{v8.11}{IPsec Transport}
+\uli{
+	\li IP Datagramms sollten verschlüsselt und authentifiziert sein, damit IP Spoofing und hijacking sowie Modifikationen des Paketes unmöglich sind.
+	\li Verschlüsselung ohne Authentication ist verwundbar durch verschiedene Attacken
+}
+\stdImg{v8.12}{IP Authentication Header AH}
+\uli{
+	\li Schützt Header und Payload gegen Modifications mittels MAC
+	\li Header hat die Struktur einer IPv6 Header Extension, funktioniert allerdinga auch unter IPv4
+	\li AH Kann beliebige Transport Layer Protokolle schützen
+}
+\stdImg{v8.13}{IP Encapsulated Secure Payload ESP}
+\uli{
+	\li  ESP encrypts the transport payload of the IP datagram using a strong symmetric
+encryption algorithm, (AES, CAMELLIA, 3DES, etc.).
+	\li Trailer füllt Paket auf 4 Byte Blöcke auf.
+	\li Initialisierungsvektor für die Verschlüsselung, falls ein Paket verloren geht
+	\li Struktur einer IPv6 Extension
+}
 
-
-
-
-
-
-
-
-
+\se{IPsec Tunnel Mode}
+\stdImg{v8.14}{VPN}
+\uli{
+	\li Connect Subnet's together over unsecure channels
+	\li Benutzt Verschlüsselten und Authentifizierten IPsec Tunnel
+	\li Hinter dem Secure Gateway können lokale, nicht im Internet addressierbare Adressen verwendet werden, die im Internet nicht addressierbar sind
+}
+\stdImg{v8.15}{VPN Package}
+\stdImg{v8.16}{ESP Header, Payload and Trailer}
+\stdImg{v8.17}{Authenticated Encryption with Associated Data (AEAD)}
+\stdImg{v8.18}{IPsec Tunnel Mode AEAD Packet Overhead}
+\stdImg{v8.19}{IPsec Tunnel using AH}
 
 
 
