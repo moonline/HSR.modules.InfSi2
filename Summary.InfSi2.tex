@@ -684,105 +684,409 @@ Warum brauche ich Anonymität:
 
 \img{img/v7.1.jpg}{Wo befinden sich Daten in einer Firma}{1}{}
 \sse{Data leakage}
-\img{img/v7.2.jpg}{Wo können Daten geleakt werden}{1}{}
+	\img{img/v7.2.jpg}{Wo können Daten geleakt werden}{1}{}
 
-\sse{Data Leak Protection}
-\img{img/v7.3.jpg}{}{0.75}{}
-\uli{
-	\li Egress Controll: Was verlässt das Unternehmen
-	\li Usage Control: z.B. DRM
-}
+	\sse{Data Leak Protection}
+	\img{img/v7.3.jpg}{}{0.75}{}
+	\uli{
+		\li Egress Controll: Was verlässt das Unternehmen
+		\li Usage Control: z.B. DRM
+	}
 
 \se{Egress Control}
-\img{img/v7.4.jpg}{Datenkontrolle}{1}{}
-\img{img/v7.5.jpg}{Test Daten Anonymisierungsarten}{0.75}{}
-\img{img/v7.6.jpg}{Egress Control Example}{0.75}{}
+	\img{img/v7.4.jpg}{Datenkontrolle}{1}{}
+	\img{img/v7.5.jpg}{Test Daten Anonymisierungsarten}{0.75}{}
+	\img{img/v7.6.jpg}{Egress Control Example}{0.75}{}
 
-\sse{Information Rights Management IRM}
-$IRM = Usage Control + Encryption$ \\
-\ra Controllieren, was mit Informatioin geschieht
+	\sse{Information Rights Management IRM}
+		$IRM = Usage Control + Encryption$ \\
+		\ra Controllieren, was mit Informatioin geschieht
 
-\sse{AD RMS}
-\uli{
-	\li Active Directory basiertes Dateisystem-IRM mit MS Office Support
-	\li Rechte werden direkt in der Datei gespeichert
-}
-\img{img/v7.7.jpg}{Publish and Consume Files}{0.75}{}
+		\sse{AD RMS}
+		\uli{
+			\li Active Directory basiertes Dateisystem-IRM mit MS Office Support
+			\li Rechte werden direkt in der Datei gespeichert
+		}
+		\img{img/v7.7.jpg}{Publish and Consume Files}{0.75}{}
 
 
 \ch{VPN}
 
-\definition{VPN}{Virtual Private Network}
-\se{Point to Point Protocol PPP}
-\stdImg{v8.1}{PPP}
-\uli{
-	\li  Authentication using PAP (password), CHAP (challenge/response), or the
-Extensible Authentication Protocol (EAP) supporting e.g. token cards
-}
-\stdImg{v8.2}{PPP Encryption Control Protocol}
+	\definition{VPN}{Virtual Private Network}
+	\se{Point to Point Protocol PPP}
+		\stdImg{v8.1}{PPP}
+		\uli{
+			\li  Authentication using PAP (password), CHAP (challenge/response), or the
+		Extensible Authentication Protocol (EAP) supporting e.g. token cards
+		}
+		\stdImg{v8.2}{PPP Encryption Control Protocol}
 
-\se{Layer2/3/4 Tunneling}
-\stdImg{v8.3}{L2TP Compulsory Mode} 
-\stdImg{v8.4}{L2TP Voluntary Mode}
-\stdImg{v8.5}{Layer3 tunneling IPsec based}
-\stdImg{v8.6}{L2TP  over IPsec - Voluntary Modes}
-\stdImg{v8.7}{Layer4 Tunnel based on TLS}
-\stdImg{v8.8}{L2/3/4 Tunneling Comparison}
+		\se{Layer2/3/4 Tunneling}
+		\stdImg{v8.3}{L2TP Compulsory Mode} 
+		\stdImg{v8.4}{L2TP Voluntary Mode}
+		\stdImg{v8.5}{Layer3 tunneling IPsec based}
+		\stdImg{v8.6}{L2TP  over IPsec - Voluntary Modes}
+		\stdImg{v8.7}{Layer4 Tunnel based on TLS}
+		\stdImg{v8.8}{L2/3/4 Tunneling Comparison}
 
-\se{MPLS}
-\definition{MPLS}{Multi Protocol Label Switching}
-\stdImg{v8.9}{MPLS Based VPN}
-\uli{
-	\li VPN Paet erhält im ISP Backbone beim Eintritt vor das IP Paket ein Label. Dadurch kann es ohne Auslesen der IP Informationen geroutet werden.
-	\li Ein weiteres Label definiert den Routingweg und wird von Hop zu Hop verändert
-	\li Label based Routing ist effizienter und ermöglich es einfache statistiken zu erheben
-}
-\stdImg{v8.10}{MPLS L2 Shim Header}
-\uli{
-	\li Shim Header is inserted after the DLL Header and before the IP Header (between L2 and L3)
-	\li Type Of Service Field ist ähnlich dem Type of Service Field des IP Headers
-	\li Das TTL Field übernimmt die gleiche Funktion wie das Time To Live Field des IP Headers
-}
+	\se{MPLS}
+		\definition{MPLS}{Multi Protocol Label Switching}
+		\stdImg{v8.9}{MPLS Based VPN}
+		\uli{
+			\li VPN Paet erhält im ISP Backbone beim Eintritt vor das IP Paket ein Label. Dadurch kann es ohne Auslesen der IP Informationen geroutet werden.
+			\li Ein weiteres Label definiert den Routingweg und wird von Hop zu Hop verändert
+			\li Label based Routing ist effizienter und ermöglich es einfache statistiken zu erheben
+		}
+		\stdImg{v8.10}{MPLS L2 Shim Header}
+		\uli{
+			\li Shim Header is inserted after the DLL Header and before the IP Header (between L2 and L3)
+			\li Type Of Service Field ist ähnlich dem Type of Service Field des IP Headers
+			\li Das TTL Field übernimmt die gleiche Funktion wie das Time To Live Field des IP Headers
+		}
 
-\se{IPsec Transport Mode}
-\stdImg{v8.11}{IPsec Transport}
-\uli{
-	\li IP Datagramms sollten verschlüsselt und authentifiziert sein, damit IP Spoofing und hijacking sowie Modifikationen des Paketes unmöglich sind.
-	\li Verschlüsselung ohne Authentication ist verwundbar durch verschiedene Attacken
-}
-\stdImg{v8.12}{IP Authentication Header AH}
-\uli{
-	\li Schützt Header und Payload gegen Modifications mittels MAC
-	\li Header hat die Struktur einer IPv6 Header Extension, funktioniert allerdinga auch unter IPv4
-	\li AH Kann beliebige Transport Layer Protokolle schützen
-}
-\stdImg{v8.13}{IP Encapsulated Secure Payload ESP}
-\uli{
-	\li  ESP encrypts the transport payload of the IP datagram using a strong symmetric
-encryption algorithm, (AES, CAMELLIA, 3DES, etc.).
-	\li Trailer füllt Paket auf 4 Byte Blöcke auf.
-	\li Initialisierungsvektor für die Verschlüsselung, falls ein Paket verloren geht
-	\li Struktur einer IPv6 Extension
-}
+	\se{IPsec Transport Mode}
+		\stdImg{v8.11}{IPsec Transport}
+		\uli{
+			\li IP Datagramms sollten verschlüsselt und authentifiziert sein, damit IP Spoofing und hijacking sowie Modifikationen des Paketes unmöglich sind.
+			\li Verschlüsselung ohne Authentication ist verwundbar durch verschiedene Attacken
+		}
+		\stdImg{v8.12}{IP Authentication Header AH}
+		\uli{
+			\li Schützt Header und Payload gegen Modifications mittels MAC
+			\li Header hat die Struktur einer IPv6 Header Extension, funktioniert allerdinga auch unter IPv4
+			\li AH Kann beliebige Transport Layer Protokolle schützen
+		}
+		\stdImg{v8.13}{IP Encapsulated Secure Payload ESP}
+		\uli{
+			\li  ESP encrypts the transport payload of the IP datagram using a strong symmetric
+		encryption algorithm, (AES, CAMELLIA, 3DES, etc.).
+			\li Trailer füllt Paket auf 4 Byte Blöcke auf.
+			\li Initialisierungsvektor für die Verschlüsselung, falls ein Paket verloren geht
+			\li Struktur einer IPv6 Extension
+		}
 
-\se{IPsec Tunnel Mode}
-\stdImg{v8.14}{VPN}
-\uli{
-	\li Connect Subnet's together over unsecure channels
-	\li Benutzt Verschlüsselten und Authentifizierten IPsec Tunnel
-	\li Hinter dem Secure Gateway können lokale, nicht im Internet addressierbare Adressen verwendet werden, die im Internet nicht addressierbar sind
-}
-\stdImg{v8.15}{VPN Package}
-\stdImg{v8.16}{ESP Header, Payload and Trailer}
-\stdImg{v8.17}{Authenticated Encryption with Associated Data (AEAD)}
-\stdImg{v8.18}{IPsec Tunnel Mode AEAD Packet Overhead}
-\stdImg{v8.19}{IPsec Tunnel using AH}
+	\se{IPsec Tunnel Mode}
+		\stdImg{v8.14}{VPN}
+		\uli{
+			\li Connect Subnet's together over unsecure channels
+			\li Benutzt Verschlüsselten und Authentifizierten IPsec Tunnel
+			\li Hinter dem Secure Gateway können lokale, nicht im Internet addressierbare Adressen verwendet werden, die im Internet nicht addressierbar sind
+		}
+		\stdImg{v8.15}{VPN Package}
+		\stdImg{v8.16}{ESP Header, Payload and Trailer}
+		\stdImg{v8.17}{Authenticated Encryption with Associated Data (AEAD)}
+		\stdImg{v8.18}{IPsec Tunnel Mode AEAD Packet Overhead}
+		\stdImg{v8.19}{IPsec Tunnel using AH}
+
+	\se{Repetition}
+		\uli{
+			\li Netzwerke über öffentliches Netz koppeln
+				\img{img/v8.14.jpg}{VPN}{0.5}{}
+			\li private Netzwerkadressen verwenden
+			\li Gesammter Verkehr wird getunnelt \ra\ Security Gateway verschlüsselt Pakete und sendet sie aufs Netz, Security Gateway entschlüsselt am Ende die Pakete wieder
+			\li Pakete werden durch Tunneln länger als offizielle MTU
+			\li Clients merken nichts, dass sie getunnelt werden
+			\li IPsec Tunnels sind standardisiert im Gegensatz zu SSL Tunnels
+			\li Übertragenes Paket ist verschlüsselt, interner Aufbau nicht sichtbar
+			\li Paket enthält am Ende zusätzliche Checksumme, um Integrität zu garantieren
+			\li äusserer IP Header ist nicht geschützt
+			\li ESP ist eigenständiges IP Protokoll, hat keine Ports
+			\li Wann immer möglich AES-GSM als Verschlüsselung verwenden, weil Overhead gering und verschlüsselung schnell
+			\li ESP verschlüsselt und sichert normale IP Pakete
+		}
+
+	\se{Internet Key Exchange IKE}
+		\definition{IKE SA}{Verschlüsselt die IKE UDP Meldungen}
+		\definition{IPsec SA}{Verschlüsselung des Payload}
+		\uli{
+			\li für in/out Verkehr werden unterschiedliche Schlüssel verwendet
+			\li Verschlüsselungsalgorithmen werden wie bei TLS ausgehandelt
+			\li IKE ist kein Client/Server Protokoll, sondern ein P2P Protokoll (Endpunkte gleichberechtigt)
+		}
+		\sse{IKEv1}
+			\sss{Main Mode}
+				\stdImg{v9.1}{IKEv1 Main Mode}
+				\uli{
+					\li Erste Phase abgeschlossen:
+						\uli{
+							\li Richtigen Endpunkte verbunden
+							\li Verschlüsselte Kommunikation über UDP
+						}
+				}
+				\expl{IKEv1 IPsec Policy}{Legt fest, welche Trafic Selectors gekoppelt werden. Beide Endpunkte müssen die gleiche Policy haben für den QuickMode \ra\ beide Enden müssen einverstanden sein.}
+			\sss{Main Mode mit Pre Shared Keys}
+				\stdImg{v9.2}{IKE Mainmode using Pre-Shared Keys}
+				\uli{
+					\li IKE Hashed Benutzerpasswot in $Hash_i$, damit keine Brute Force Attacke auf Hash möglich ist
+					\li Problem, VPN Router müsste alle Benutzer durchprobieren, um den richtigen zu finden bei dynamischen IP Adressen. Daher wird der Main Mode nie gebraucht. \ra\ Agressive Mode wird verwendet
+				}
+			\sss{Agressive Mode mit PSK}
+				\stdImg{v9.3}{IKEv1 Agressive Mode}
+				\uli{
+					\li Problem mit Agressive Mode: Responder übermittelt offen Hash (Hash über beiden Meldungen+Benutzer Passwort)
+					\li Passwort Hash kann gesnifft werden und später durch GPU geknackt werden
+					\li Wenn PSK schwach sind, kann jeder mit einem Sniffer die Passwörter knacken
+				}
+				\stdImg{v9.4}{Man-in-the-Middle Attack possible with IKE Aggressive Mode and XAUTH}
+				\uli{
+					\li VPN Gateway wird nur mit Gruppenpasswort authentifiziert \ra\ Man-in-the-Middle Attack möglich, weil innerhalb einer Firma jeder das Gruppenpasswort kennt.
+				}
+				\important{Agressive Mode NIE verwenden. Gruppenpasswörter sind für die Katz.}
+
+		\sse{ISAKMP and IPsec Security Associations}
+			\stdImg{v9.5}{Rekeying}
+			\uli{
+				\li Kurz vor Ablauf des Schlüssels, wird ein neuer Key ausgetauscht \ra\ Unterbrechungsreier Schlüsselwechsel
+				\li Bei Ablauf der Lifetime wird eine Reauthentisierung gemacht
+			}
+			
+		\sse{IKEv2}
+			\uli{
+				\li Anzahl Pakete senken
+				\li Ist nicht rückwärtskompatibel zu IKEv1
+			}
+			\stdImg{v9.6}{IKEv2 Authentication and first Child SA}
+			\uli{
+				\li Nach dem ersten Austausch ist man bereits in der Lage, verschlüsselt fortzufahren
+				\li Nur Initiator macht Retransmissions bei Paketverlust, responder macht Acks \ra\ führt zu Robustheit im Vergleich zu IKEv1, bei der beide Retransmit machen und anschliessned zwei Sessions das sind.
+				\li Client muss nicht genau Netzwerke / Trafic Selektoren kennen, Gateway wählt automatisch besseren
+			}
+			
+			\sss{Cookie Machanism against DoS Attacks}
+				\uli{
+					\li Responder sagt dem Initiator, er solle alles mit dem Cookie nochmalsschicken, und berechnet erst dann die DH Key
+					\li Im Unterschied zu IKEv1 ist der Cookie Mode nicht mehr standard, sondern muss aktiviert werden
+				}
+				\stdImg{v9.7}{Cookie Machanism against DoS Attacks}
+			
+			\sss{Additional CHild SAs}
+				\stdImg{v9.8}{Child SA}
+				\uli{
+					\li Wenn z.B. auf beiden Seiten ein Netz angeschlossen ist, die über das gleiche VPN untereinander verbunden, aber nicht mit den andern werden sollen.
+				}
+
+	\se{VPN Applications}
+		\stdImg{v9.9}{Abteilungen verbinden, Remote Access}
+		
+		\sse{Remote Access}
+			\stdImg{v9.10}{Remote Access Cases}
+			\uli{
+				\li dynamische IPs
+				\li Virtuelle IPs im Remote Access werden gebraucht, damit Firmenintern der Gateway weiss, das das Paket getunnelt werden muss
+			}
+
+	\se{VPN Features}
+		\stdImg{v9.11}{Extended Authentication mit EAP}
+
+	\se{NAT Traversal}
+		\uli{
+			\li Initiator sendet im Hash seine IP mit
+			\li Unterscheidet sich beim Responder die IP vom Hash, ist ein NAT zwischendrin
+			\li dann wird das IKE Paket in UDP getunnelt, um durch den NAT Router zu kommen
+		}
+		\stdImg{v9.12}{UDP Tunneling}
+		\stdImg{v9.13}{ESP-in-UDP Encapsulation (RFC 3948)}
+
+	\se{Dead Peer Detection}
+		\uli{
+			\li Jede Minute wird ein Ping gesendet, kommt kein Pong zurück, wird die Verbindung abgebaut
+			\li Damit werden Probleme vermieden, wenn Rechner in den Sleep Mode gehen, und sich nicht vom VPN abmelden.
+		}
 
 
 
+\ch{DNSSEC}
+	\se{DNS}
+	\expl{Root Server Ddos Attacke}{Nicht mehr realistisch, weil Server redundant und weit verteilt}
+	\stdImg{v10.1}{DNS Name Resolution}
+		\uli{
+			\li Anfrage geht zu ISP
+			\li ISP macht rekursive Anfrage
+			\li ISP erhält Anwort von Server: ´´Ich bin nicht zuständig, frag XY''
+			\li ISP fragt XY
+			\li XY liefert wieder andern Server
+			\li Dieser liefert IP der Domain
+			\li ISP liefert Antwort zurück an Client
+			\li Anfrage ist nicht Authentisiert, da Sie nicht vom Client selbst gemacht wurde
+		}
+		\stdImg{v10.2}{DNS Request}
+		\uli{
+			\li Rekursiv Flag legt fest, dass der ISP die Abfrage rekursiv machen soll
+			\li QID: Query ID
+		}
+		\stdImg{v10.3}{DNS Response}
+		\uli{
+			\li Response enthält als additional die IP des zuständigen Nameservers
+			\li Diese IP ist nicht authoritativ \ra\ Schwäche
+		}
+		
+		
+	\se{DNS Poisoning}	
+		\stdImg{v10.4}{DNS Cache Poisoning}
+		\uli{
+			\li Nameserver zählt QID rauf \ra\ Angreifer kann mit hochgezählter QUI fake Response einspeisen
+			\li ISP übernimmt erste Antwort, die unter Umständen Tage im Cache verbleibt \ra\ alle Kunden sind betroffen
+		}
+		\stdImg{v10.5}{Durch erraten der Query ID und des UDP Source Port kann eine ganze Zone übernommen werden}
+		\stdImg{v10.6}{The Dan Kaminsky DNS Vulnerability – July 2008}
+		\uli{
+			\li Anfrage an Root Server wird abgefangen, indem IP des zuständigen Nameserver eingespiesen wird \ra\ falscher Nameserver
+			\li Ermöglicht totale übernahme einer Domäne, inklusive Mix Einträge für Mail, etc.
+		}
+
+		\sse{Lösungen}
+			\uli{
+				\li QID wird randomisiert
+				\li Randomisierung der UDP Out-Ports
+				\li Trotzdem Angriff durch Brute Force möglich
+			}
 
 
 
+	\se{DNSSEC}
+		\stdImg{v10.7}{DNSSEC Chain of Trust}
+		\uli{
+			\li Hirarchische Trust Chain
+			\li Root Zone hat CA Zertifikat
+			\li ICANN hat Root Server zertifiziert \ra\ kein einzelnes Land hat Macht über Root Server
+		}
+		\expl{Key Signing Key KSK}{Dient zum signieren des Arbeitsschlüssels (Zone Signing Key) \ra\ Key Signing Key (2048bit) wird nur alle paar Monate aus dem Tresor geholt und damit die ZSK (1024bit) für die nächsten Monate signiert}
+		\expl{Zone Signing Key ZSK}{Wird verwendet, um alle Records der Zone zu signieren}
+		\uli{
+			\li .ch wird von Root Zone signiert
+			\li Signiert wird ZSK der .ch Zone\ra\ Hash auf KSK der .ch Zone
+			\li Vertrauen zwischen .ch Zone und Root Zone wird durch SHA1 Hash, der an die Root Zone gegeben wird und von dieser Signiert wird \ra\ garantiert, dass der .ch-KSK vertrauenswürdig ist.
+			\li .ch Zone besitzt wiederum ZSK, der vom KSK signiert ist
+			\li KSK der Switch Zone ist wiederum durch .ch-ZSK signiert
+			\li switch besitzt wiederum ZSK
+			\li Signiert werden nicht einzelne Resource Records, sondern Record Sets (z.B. werden bei Switch alle Nameserver gehashed und dann Signiert)
+			\li Bsp Google: Alle Google Domains werden gehashed und Signiert
+		}
+		\expl{Root Server Vertrauenswürdigkeit}{Wer Kontrolle über den Rootkey erhält, hat die Kontrolle über das gesammte DNS System}
+		\expl{Kompromitierter Key}{Kompromitierte Keys können nicht zurückgezogen werden. Laufen einfach nach Laufzeit ab dann gibt es einen neuen\\
+		\ra\ TTL der Einträge im Cache muss kleiner sein als die Laufzeit der Zertifikats. Im Normalfall 2 Tage}
+		\stdImg{v10.8}{DNS Eintrag}
+
+		\sse{NSEC Einträge /NSEC3}
+			\uli{
+				\li Wenn Domain nicht existiert, muss die Antwort, dass dieser nicht existiert, auch signiert sein
+				\li Durch NSEC Einträge liesse sich eine gesammte Domäne emulieren
+				\li NSEC Antwort liefert Range, zwischen definierten Adressen, der keine Domains beinhaltet (z.B. hsr.ch bis hsq.ch)
+				\li Es sollte nicht herausfindbar sein, welche Domains existieren
+				\li NSEC3: Um zu verhindern, dass bei der Range-Angabe Domains angegeben werden, werden die Domains gehashed, und als Antowrt kommt nur zurück: Zwischen HashA und HashB gibt es keine Domain
+				\li Mit einer Wörterbuchattacke lässt sich auch trotz der Hashes ein Grossteil der .ch Domains ermitteln
+			}
+
+	
+	
+	\se{Dane}
+		\definition{DANE}{DNS based Authentication of Named Entities}
+		\stdImg{v10.9}{DANE TLS Record}
+		\uli{
+			\li Zertifizierung von Webservern über DNSSEC umsetzen
+			\li relativ neue Technologie
+			\li DANE definiert neuen Resource Record: TLSA
+			\li Browser kann überprüfen, wer eine Seite zertifiziert hat
+		}
+		
+		\sse{Verifying Server and CA Certificates}
+			\stdImg{v10.10}{DANE – Verifying Server and CA Certificates}
+			\uli{
+				\li Bei der DNS anfrage für die Domain (hsr) erhält der Browser auch gleich den TLSA Record, mit dem der Browser überprüfen kann, ob die richtige CA den Server Zertifiziert hat
+				\li Dazu wird der Hash von z.B. Quoadis in meinem Zonenfile hinterlegt
+			}
+			\stdImg{v10.11}{Alternative Verifikation}
+		
+		\sse{ Getting Server Certificate or Public Key}
+			\stdImg{v10.12}{DANE Getting Server Certificate or Public Key}
+			\uli{
+				\li Root Zertifikat wird mit Dane heruntergeladen
+				\li VeriSing wird damit überflüssig, weil jede Domäne ihr eigenes Root Zertifikat erstellen kann und dies einfach in ihr Zonen File eintragen kann
+			}
+		
+		\sse{Verifying Self-Signed Server Certificates}
+			\stdImg{v10.13}{Self Signed Server Zertifikate}
+			\uli{
+				\li Nur derjenige, der das Recht hat, den Eintrag im Zonenfile zu machen, hat auch das Recht, ein Zertifikat zu hinterlegen
+				\li Damit werden Root CA's überflüssig
+			}
+		
+		
+	\se{Sicherung der Root Zone}
+		\stdImg{v10.14}{}
+		\uli{
+			\li VeriSign zertifiziert den Root Server
+			\li Der KSK wird nicht von VeriSign zertifiziert
+			\li ICANN zertifiziert den KSK
+		}
+		\stdImg{v10.15}{}
+		
+		
+\ch{Network Access Controll}		
+	\se{Firewall}
+		\expl{Firewall}{Firewall braucht es nur, weil die Software so schlecht ist und sich selbst zu schlecht verteidigt \ra\ Firewall ist eine Notlösung}
+		\uli{
+			\li DMZ: Dienste, die direkt mit dem Internet in Kontakt stehen wie Mailserver, VPN Gateway, ...
+			\li Erste Firewalls: Paketfilter
+		}
+		\stdImg{v11.1}{Aufbau einer dreistufigen Firewall}
+		\stdImg{v11.2}{Traffic Control}
+		\expl{Statefull Inspection}{Keine statischen Regeln (Paketfilter), sondern Statusüberprüfung (z.B. TCP) anhand dessen genau geprüft werden kann, was für ein Packet gerade erlaubt ist \ra\ dafür können fast wieder alle Ports erlaubt werden. }
+		\examp{Statefull Inspection UDP}{DNS Reply ist nur nach DNS Request mit der gleichen QID erlaubt.}
+		
+	
+	\se{NAC}
+		\sse{User Authentication}
+			\uli{
+				\li L2: IEEE 802.1X (swichtes / wlan access points)
+				\li L3/4: VPN IKEv2, TLS based methods
+			}
+			
+		\sse{Configuration Assessment}
+			\uli{
+				\li Client config untersuchen
+				\li Clent auf unerwünschte Software prüfen
+				\li \ra\ durchsetzen der Policy auf dem Client Device
+			}	
+			\stdImg{v11.3}{NAC}
+			\uli{
+				\li NAC Server lässt Client nur zu, wenn sein Gesundheitszustand der Policy entspricht
+				\li Client, der nur einen niedrigen Gesunheitszustand besitzt, wird nur ins Isolate Network zugelassen
+				\li Drei Stufen: allow, isolate, block
+			}
+		
+		\sse{Trusted Network Connect TNC}
+			\stdImg{v11.4}{TNC}
+			\uli{
+				\li IMC: Bestehender Network Supplicant wird um TNC erweitert und führen Messungen durch
+				\li Server überprüft Messungen
+				\li Zwischenschicht wird nur als Multiplexer gebraucht
+				\li Was ist, wenn der Client (oder ein Trojaner) dem Server Messergebnisse vorgauckelt (Lieing Endpoint)? \ra\ kein Schutz
+			}
+			
+			\stdImg{v11.5}{}
+			\uli{
+				\li Benutzerauthentisierung über geschützten Kanal (oft EAP)
+				\li Anschliessend Gesundheitsmessungen
+			}
+			\stdImg{v11.6}{RFC Standard}
+			
+			
+			
+	\se{Metadata Access Point}
+		\uli{
+			\li Netzwerkdaten zusammenzuführen und zu korrelieren
+			\li Aufgrund dieser Informationen können unerlaubte Zugriffe / geblockt werden
+		}
+		\stdImg{v11.7}{MAP}
+		\stdImg{v11.8}{Extended TNC Architecture}
+		\stdImg{v11.9}{Korrelation der Daten}	
+			
+			
+			
+			
+			
+			
 
 
 \end{document}

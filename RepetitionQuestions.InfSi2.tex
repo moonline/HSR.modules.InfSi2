@@ -259,6 +259,70 @@ urlcolor=black
 }
 
 
+\se{Internet Key Exchange}
+\olp{
+	\li Was ist die Aufgabe des IKE?
+	\li Was ist eine Security Association?
+}
+
+\sse{IKEv1}
+\olp{
+	\li Skizzieren Sie, wie IKEv1 im Main Mode funktioniert. Skizzieren Sie was für Pakete mit welchen Inhalten übertragen werden, und welche Teile der Pakete verschlüsselt sind.
+	\li Wie funktioniert IKEv1 im Main Mode mit Pre-Shared Keys? Warum wird dieser Modusin der Praxis ncht eingesetzt?
+	\li Wie funktioniert der IKEv1 im Aggressive Mode? Wo liegt die Schwachstelle?
+	\li Wie funktioniert ein Man-in-the-Middle Attack auf IKEv1 im Aggressive Mode?
+	\li Wie funktioniert IKEv1 Phase2
+}
+
+\sse{IKEv2}
+\olp{
+	\li Nennen Sie einige entscheidende Neuerungen / Änderungen bei IKEv2
+	\li Skizzieren Sie auf, wie Authentication und die etablierung einer ersten Child SA funktioniert. Skizzieren Sie, was für Pakete mit welchen Inhalten übertragen werden, und welche Teile verschlüsselt sind.
+	\li Wie funktioniert der Cookie Mechanismus?
+	\li Wie funktioniert das hinzufügen einer zweiten Child SA?
+	\li Beschreiben Sie die beiden Anwendungsfälle ``VPN zwischen Standorten'' und ``Remote Access''.
+	\li Nennen Sie zwei möglichkeiten, die Authentication an einen andern Dienst auszulagern. Welche Variante ist zu bevorzugen? Warum?  
+	\li Was müssen Sie machen, damit Sie mit IKE und VPN durch NAT Router durchkommen? Skizzieren Sie die entsprechenden Pakete.
+}
+
+
+\ch{DNSSEC}
+\olp{
+	\li Wie funktioniert die Kaminski Attacke auf das DNS System?
+	\li Erklären Sie, wie ein DNS Request und eine DNS Response aufgebaut sind.
+	\li Wie funktioniert die DNSSEC Chain of Trust? Was sind KSK und ZSK?
+	\li Was ist die RRSIG?
+	\li Was ist DANE? Wozu dient es?
+	\li Wie können Sie mit DANE Server- und CA Zertifikat Verifizieren?
+	\li Wie können Sie mit DANE das CA Zertifikat oder den Public Key erhalten?
+	\li Wie funktionieren Self-Signed Server Zertifikate mit DANE?
+	\li Wie funktioniert das verifizieren von rohen RSA Keys mit DANE?
+	\li Wie können Sie mit DANE das Server Zertifikat oder den Public Key erhalten?
+	\li Wie funktioniert der DNS Root Zone Singing Process?
+	\li Welche Möglichkeiten gibt es, falls ein Key eines DNSSEC Servers kompromitiert wird? Kann der Key zurückgezogen werden?
+	\li Wer betreibt die Root DNSSEC Server? Wie wird die Echtheit des Root KSK/ZSK garantiert?
+}
+
+
+\ch{NAC}
+\se{Firewall}
+\olp{
+	\li Erklären Sie das Grundsätzliche Prinzip von Firewalls
+	\li Was ist ``Statefull Inspection''?
+}
+
+\se{NAC}
+\olp{
+	\li Auf welche Arten wird bei NAC die User authentication realisiert?
+	\li Wozu wird ein ``Configuration Assessment'' durchgeführt?
+	\li Erklären Sie die drei NAC Zustände/Zonen
+	\li Wie funktioniert TNC? Skizzieren Sie auf, was auf NAC Layer ausgetauscht wird.
+	\li Wie wird bei NAC eine sichere Verbindung zum Austausch der Pakete für den Identity Check und den Health Check aufgebaut?
+	\li Was ist Network Endpoint Assessment?
+	\li Was ist ein ``Metadata Access Point''?
+	\li Wo liegt der Vorteil von einem zentralen Map Service? Wie passt der Service in die NAC Architektur?
+	\li Kann NAC erkennen/schützen, wenn ein ``Lying Endpoints'' vorliegt?
+}
 
 
 \appendix
