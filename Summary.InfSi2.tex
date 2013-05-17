@@ -1084,7 +1084,49 @@ Warum brauche ich Anonymität:
 			
 			
 			
-			
+\ch{Buffer Overflows}
+	\expl{Buffer Overflow}{Angreifer Schickt so viele, entsprechend zusammengestellte Pakete, dass der Buffer des Paketparsers beim Empfänger überläuft und der Code in einen Ausführbaren Bereich überfliesst.}
+
+	\stdImg{v12.1}{Buffer Overflow}
+	\stdImg{v12.2}{}
+	\stdImg{v12.3}{Segmentation Fault caused by Buffer Overflow}
+	\oli{
+		\li Stringcopy strcpy() prüft Länge nicht und kopiert einfach das gegebene Argment an die Zieladresse
+		\li Mit Stringcopy ist es möglich, in den Bereich des \%ebp und \%eip zu schreiben
+		\li Somit ist es möglich, die Rücksprungadresse zu verändern
+	}
+	\expl{denil of Service Vulnerability}{Server wird abgeschossen durch Buffer Overflow. \ra\ Einfacher als ddos Attacke.}
+
+	\stdImg{v12.4}{execve()}
+	\uli{
+		\li execve() geht über Interrupts.
+		\li Schleusst String mit Pfad zu Shell ein
+		\li Buffer beinhaltet Shellcode
+		\li Mit noOpperation Code wird die Lücke zwischen Buffer und \%eip gefüllt und am Ende die Rücksprungadresse in \%eip geschrieben.
+	}
+	\stdImg{v12.5}{The assembly code of execve() starting /bin/sh}
+	\stdImg{v12.6}{Using jmp and call to determine string address}
+	\stdImg{v12.7}{Null-free Shellcode}
+	\stdImg{v12.8}{Including the Buffer Address}
+	\stdImg{v12.9}{Making the Buffer Overflow Exploit More Robust}
+
+	\se{Schutzmassnahmen}
+		\uli{
+			\li Address Space Layout Randomization (ASLR) \ra\ über mehrere hundert Kilobyte variiert der Beginn des Stacks. Der Buffer ist nie so gross, dass man mit nooperation Code diese Lücke überbrücken könnte.\\
+			\ra\ Ist keine absolute Hürde, aber erhöht den Schwierigkeitsgrad
+			\li Canaries ()
+				\uli{
+					\li Bekannte Werte werden zwischen Buffer und \%eip wird ein fester Wert reingeschrieben. Vor dem Rücksprung wird dieser Wert auf korrektheit überprüft. (Meisstens werden 0-Character benutzt, weil ein Schadcode keine 0-Character beinhalten kann (0 Terminiert Stringcopy)\\
+					\ra\ über mehrere Bufferoverflows kann zuerst die Adresse geändert und anschliessend das Canary wiederhergestellt werden.
+					\li Randoom Canary wird verknüpft mit Rücksprungadresse \ra\ sehr schwierig, um Canary wiederherzustellen.
+				}
+			\li ESP (Executable Space Protecten) \ra\ Flag, der Stack und Heap als Nicht ausführbar flagged \ra\ bei 64Bit Standard
+		}
+
+
+
+
+
 			
 			
 
