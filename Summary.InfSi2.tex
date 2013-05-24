@@ -1124,8 +1124,114 @@ Warum brauche ich Anonymität:
 		}
 
 
+\ch{SmartCards}
+	\stdImg{v13.1}{Cryptographical Building Blocks}
+	\uli{
+		\li Alle Kryptoverfahren benötigen Schlüssel
+		\li Schlüssel kann gestohlen werden
+	}
+
+	\se{SmartCard Typen}
+		\stdImg{v13.2}{SmartCart Typen}
+		\expl{Einfache Chipkarten}{Simple Speicherkarten, die einen Wert speichern und es nicht erlauben, denn Wert wieder aufzuladen. Sehr günstig.}
+		\examp{Einfache Chipkarten}{Telefonkarten, SIM-Karte}
+
+		\expl{Crypto Card}{Unterstützen RSA. Das BS im ROM ist vor Veränderungen geschützt. Karte blockiert nach 3 Fehlversuchen.}
+
+		\expl{JavaCard}{Karte, deren BS geschützt ist, aber das Profil geändert werden kann. Damit kann die Software darauf aktualisiert werden.}
+
+		\expl{USB Token}{Chipkarte mit USB Schnittstelle. Kein Karten Adapter wird gebraucht. Höhere Datenrate. Teuer.\\
+			Günstie Alternative: USB Stick ist nur Adapter für ChipKarte in SIM-Format. Chip muss allerdings einen USB-Kontroller besitzen.
+		}
+		\expl{Kontaktierung}{Über klassisches Kontaktfeld oder Drahtlos. Bei Drahtloskarten wird der Prozessor über die Luft gespiesen. Reichweite nur wenige Zentimeter. 
+			\uli{
+				\li Proximity Cards (ISO 14443): distance < 10 cm
+	 			\li Vicinity Cards (ISO 15693): distance = 10 cm ... 1 m
+	 			\li Mit einer Batterie kommen: bis zu 100Km
+			}
+		}
+
+		\stdImg{v13.3}{Kartenklassifizierung}
 
 
+	\se{Display Card}
+		\stdImg{v13.4}{}
+		\uli{
+			\li E-Paper Display
+			\li Tasten
+			\li Flach Batterie
+		}
+
+
+	\se{NFC}
+		\uli{
+			\li Bezahlung mit 13Mhz Schnittstelle
+		}
+		\stdImg{v13.5}{Secure NFC}
+		\uli{
+			\li NFC Kontroller spricht mit SIM Karte
+			\li SWP Singe Wire Protovoll
+			\li Soll Schnittstelle vor verseuchtem Smartphone schützen
+		}
+
+	\se{Elektrische Kontakte}
+		\stdImg{v13.6}{}
+		\uli{
+			\li Ausgänge 4 und 8 (AUX) früher nicht benutzt, heute für USB Datenleitungen genutzt
+			\li Spannungen relativ klein \ra\ Durchschlag
+			\li Takt (CLK) wird extern zugeführt (4-5Mhz)
+			\li Vcc: Speisung
+			\li GND: Masse
+			\li SWP: wird für Single Wire Protocoll gebraucht, um z.B. NFC Kontroller anzuschliessen
+			\li RST: Reset zur Initialisierung. Gibt Kartentype etc. Zurück
+		}
+
+	\se{Physikalische Sicherheit}
+		\uli{
+			\li Chipkarten BS verhindert das Auslesen der Schlüssel
+			\li HSR Karte und SIM Karten machen Challenge Response, Schlüssel wird nie ausgegeben
+		}
+
+	\se{Attacken}
+		\uli{
+			\li Schlüssel könnte auf Bus oder im Ram abgegriffen werden
+				\uli{
+					\li Schutzschicht auf Chip ist gleichzeitig Dielektrikum für Kondenator. Wird diese weggeäzt um an die Leiterbahnen zu kommen, so veränder der Kondensator seine Kapazität und der Prozessor stellt den Angriff fest.
+					\li Security by Obscurity: Die genaue Anordnung auf dem Schip ist unbekannt. Elemente werden vermischt, damit gar nicht genau gewusst wird, wo die Elemente liegen.
+					\li Wird die Karte mit Kältespray kaltgestellt, kann Wochen bis Monate später noch der Zustand des RMAs unter dem Elektronenmikroskop ausgelesen werden
+					\li Ein Scrambler tauscht die Speicherzellenpositionen im RAM und im EEPROM aus \ra\ wer den Scrambling Algoithmus nicht kennt, kann mit dem Speicherinhalt nichts anfangen.
+				}
+			\li Stromverbrauchfingerprint zeigt Abfolge von Operationen \ra\ daraus kann der DES Schlüssel abgelesen werden
+				\uli{
+					\li \stdImg{v13.7}{}
+					\li Chip hat keinen Platz für Glättungskondensator
+				}
+		}
+
+
+	\se{SmartCard Filesystem}
+		\stdImg{v13.8}{SmartCard Filesystem}
+		\stdImg{v13.9}{SmartCard File Names}
+		\stdImg{v13.10}{SmartCard File Internal Structure}
+		
+		
+	\se{SmartCard Messages}
+		\exam{Details über Interner Aufbau um Kommunikation nicht Prüfungsrelevant}
+		\stdImg{v13.11}{APDUs – Application Protocol Data Units}
+		\uli{
+			\li 4Byte Befehle, als Antwort kommen 2Byte Responses
+			\li Als Response kann zusätzlich zum ResponseCode z.B. ein Zertifikat mitgegeben werden
+		}
+
+
+	\se{SmartCard Interfaces}
+		\uli{
+			\li PC/SC
+			\li PKCS\#11
+				\stdImg{v13.12}{PKCS\#11}
+		}
+
+		\exam{PKCS\#15 nicht Teil des Prüfungsstoffes}
 
 			
 			
