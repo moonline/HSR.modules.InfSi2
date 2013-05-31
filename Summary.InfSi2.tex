@@ -1235,6 +1235,84 @@ Warum brauche ich Anonymität:
 
 			
 			
+\ch{Plattform Trust}
+	\stdImg{v14.1}{How to Establish Trust in a Host and its OS?}
+	\uli{
+		\li Hardwaremodul, das nicht von Malware unterwandert werden kann, garantiert Echtheit von Health-Messungen des Gerätes
+		\li Netzwerkanbieter kann damit verifizieren, das BYOD Gesundheitsstatus korrekt ist
+		\li Smartcard könnte auch eine Art TPM darstellen, ist jedoch zu langsam
+	}
+	\stdImg{v14.2}{TNC Architecture with Platform Trust Service}
+	\stdImg{v14.3}{The Future: Trustworthy Virtual Hosts?}
+	\uli{
+		\li Sichere Anwendung läuft in einer VM, die vom TPM gestartet wurde.
+		\li VM beinhaltet z.B. minimal BS mit Ebanking Software
+	}
+		
+					
+	\se{TPM}
+		\uli{
+			\li Chip auf Motherboard fest verlötet
+			\li beinhaltet verschiedene Module:
+				\stdImg{v14.4}{}
+			\li Schwäche von Festplattenverschlüsselung ist Key im RAM. Wenn TPM über Gigabit angebunden wäre, könnte Verschlüsselung darüber laufen
+			\li TPM selbst besitzt zwei Schlüssel: Endorsment Key (EK), Storage Root Key (SRK). Alle Geheimnisse hängen am SRK. Wird dieser gelöscht, sind sämmtlliche Dateien nicht mehr lesbar.
+			\li PCR: Können nur während dem Booten gelöscht und anschliessend mit neuen Daten über die Hardware gefüllt werden
+			\li TPM hängt an LPC Bus, weil es ursprünglich zur Absicherung von Bios/UEFI gedacht wurde \ra\ nur langsame Datenverbindung
+				\stdImg{v14.5}{}
+			\li Datenschutz
+				\uli{
+					\li TPM ermöglicht über den EK ein Locking von Software auf eine Gerät
+					\li Benutzer kann über EK getrackt werden
+					\li Darum wird EK nicht herausgegeben
+					\li Benutzer kann aber mittels EK beliebig viele Keys für Anwendungen generieren
+						\stdImg{v14.6}{SRK}
+				}
+			\li Wenn das Motherboard hops geht oder ich einen neuen Rechner kaufe: MigrK (Migration Key) ermöglicht den Wechsel auf eine neue Hardware. MigrK muss jedoch vor dem Verlust des Gerätes erzeugt werden
+		}
+		
+		\sse{Hybrid File Encryption with SRK}
+			\exam{Kommt an Prüfung}
+			
+			\stdImg{v14.7}{}
+			\sss{Verschlüsselung}
+			\uli{
+				\li Effektive Verschlüsselung läuft über normale CPU
+				\li TPM generiert Storage Kex (2048bit RSA Schlüssel) \ra\ PriK bleibt in TPM, wird nie im RAM sichtbar, PubK wird auf der Festplatte abgelegt
+				\li Symetr. AES Key SymK wird mit StorPubK verschlüsselt
+				\li Dateien werden mit AES Key verschlüsselt
+				\li SRK verschlüsselt Private Key des TPM und dieser wird dann auf der Festplatte abgelet
+			}
+			
+			\sss{Entschlüsselung}
+			\uli{
+				\li PriK des SRK entschlüsselt PriK (StorKS), damit wird der AES Schlüssel entschlüsselt
+				\li PriK ist nie im normalen RAM der CPU
+			}
+		
+			\important{Baut jeand die Festplatte aus, so ist die Entschlüsselung unmöglich, weil der Entschlüsselungskey des AES Schlüssels durch den PriK des TPM des Originalgerätes geschützt ist.}
+		
+		\sse{Fields}
+			\stdImg{v14.8}{}
+		
+		\sse{Binding vs. Sealing}
+			\stdImg{v14.9}{}
+		
+			Entschlüsselung eines Dateisystems kann von Werten in TPM Register abhängig gemacht werden. \ra\ BS bootet nicht, wenn sich Werte verändert haben.
+			
+		\sse{Bootstrap Architecture in PC}
+			\stdImg{v14.10}{}
+			
+			Bevor irgendwas im Bios ausgeführt wird, wird das System gemessen, gehashed, die Hashes addiert und mit den Werten in den TPM Registern (PCR) verglichen
+			
+			\stdImg{v14.11}{Static Root of Trust for Measurement (SRTM)}
+		
+			\uli{
+				\li PCR Were können auch über TNC übermittelt werden an TNC Server. Bios Rootkit könnte Werte vorlügen. Damit dies nicht geht, müssen die Werte durch das TPM mit dem AIK Schlüssel signiert werden.
+				\li Problem: Bis und mit dem Boot Loader kann überwacht werden. BS aber nicht, weil zu komplex und zu viele Module.
+				\li Um zu verhindern, dass Malware während dem Laden einer Software ihre eigene Softwarestartet, muss während dem Laden der Software gemessen und im PCR abgelegt werden. Damit kann gewährleistet werden, dass die richtige Software geladen wird.
+				\li Damit kann z.B. eine Banking-VM gesichert werden.
+			}
 
 
 \end{document}
