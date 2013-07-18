@@ -109,12 +109,36 @@ Schlüsselmaterial und Zufallszahlen
 	* Soundkarte Rauschen
 	* Zugriffszeiten Harddisk (Varianz durch Luftturbulenzen im Gehäuse)
 	
-17) Hardwarebauteile, die einen Strom von Zufallszahlen liefern, die eine hohe Entropie aufweisen.
+17) Hardwarebauteile, die einen Strom von Zufallszahlen liefern, die eine hohe Entropie aufweisen. z.B. instabile Diodenschaltungen oder Anzapfen des thermischen Rauschens.
 
-18) Der IDQ besteht aus einer Taktung und zwei gegenseitig verschaltete Dioden, die einen bistabilen Zustand herbeiführen (flackern / wildes hin- / herschalten) und damit zufällig 0 oder 1 liefern.
+18) Der IDQ besteht aus einer Taktung und zwei gegenseitig verschaltete Dioden, die einen instabilen Zustand herbeiführen (flackern / wildes hin- / herschalten) und damit zufällig 0 oder 1 liefern.
 
 19) Liefert ein Zufallsgenerator deutlich mehr 0 als 1en oder umgekehrt, kann das zu häufig auftretende Zeichen nach Auftrittswahrscheinlichkeit substituiert werden und damit die Verteilung ausgeglichen werden.
 
 
 Data Link Security
 ==================
+20) Supplicants melden sich beim Authenticator (Access Point/Switch), dieser sendet erlaubte Anfragen weiter an den RADIUS Server. Kann der RADIUS Server den User erfolgreich anmelden, erhält er Access. Wichtig ist, das die Trunkleitung zum RADIUS Server verschlüsselt ist.
+
+21) 
+	DevId
+		Die Secure Device ID sind RSA und EC Keys, die vom Hardwarehersteller erzeugt, signiert und hinterlegt werden. Da Sie eindeutig ist, kann sie zur Generierung von Authentication Keys genutzt werden. Die DevID kann vom Benutzer nicht verändern werden.
+	DevId Modul
+		Das DevID Modul sollte nebst einem Zugriffssicheren Storage für die DevID einen Zufallsgenerator und hardwarebasierte Hash Algorithmen besitzen.
+	Key Generation
+		Anwendungsschlüssel werden direkt im DevID Modul durch die DevID, den enthaltenen Zufallsgenerator und die Hashalgorithmen erzeugt und im DevId Modul gespeichert. Die Keys verlassen das DevID Modul nie, sondern werden im Modul genutzt, um weitere Schlüssel zu signieren.
+		
+22) 
+	Secure Connectivity Association
+		Eine Data Link Layer Gruppe, deren Teilnehmer den Datenverkehr verschlüsseln. Für jeden Teilnehmer gibt es einen Sicheren Channel, durch den er die Datenpakete an die andern Teilnehmer schickt. 
+	Channel
+		Jeder Channel besitzt einen eigenen Key. Die Channels sind somit unabhängig und gerichtet.
+	Vorteile
+		Der Datenverkehr zwischen den Teilnehmern ist bereits auf Data Link Level Verschlüsselt und über die höheren Verbindungen können keine Metadaten gesammelt werden.
+
+23) 
+	1) Jeder Teilnehmer besitzen einen persönlichen Connectivity Association Key CAK. 
+	2) Ein Secure Association Key SAK wird gebildet, indem die Teilnehmer mit ihren CAKs Teile des SAK generieren. 
+	3) Mittels einem Key Encryption Key KEK werden die SAKs verteilt.
+
+24) Statt bei den Teilnehmer selbst gespeichert, liegen die Keys auf einem EAP Server, der damit dynamische CAKs generiert.
