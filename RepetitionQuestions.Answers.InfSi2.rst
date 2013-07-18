@@ -104,3 +104,17 @@ Schlüsselmaterial und Zufallszahlen
 		Genau wie wie bei der Berechnung des Master Secrets werden neue Schlüssel erzeugt, indem die Hälfte des Master Secrets mit MD5 und die andere Hälfte mit SHA-1 gehashed und verknüpft werden.
 		
 16) 
+	* Zeit zwischen Tastenanschlägen auf der Tastatur
+	* Mausbewegungen
+	* Soundkarte Rauschen
+	* Zugriffszeiten Harddisk (Varianz durch Luftturbulenzen im Gehäuse)
+	
+17) Hardwarebauteile, die einen Strom von Zufallszahlen liefern, die eine hohe Entropie aufweisen.
+
+18) Der IDQ besteht aus einer Taktung und zwei gegenseitig verschaltete Dioden, die einen bistabilen Zustand herbeiführen (flackern / wildes hin- / herschalten) und damit zufällig 0 oder 1 liefern.
+
+19) Liefert ein Zufallsgenerator deutlich mehr 0 als 1en oder umgekehrt, kann das zu häufig auftretende Zeichen nach Auftrittswahrscheinlichkeit substituiert werden und damit die Verteilung ausgeglichen werden.
+
+
+Data Link Security
+==================
