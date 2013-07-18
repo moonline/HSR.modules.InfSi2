@@ -67,7 +67,7 @@ Physical Layer Security
 	5) Versucht jemand ein Photon einzuspeisen, so geht dies nicht weil sich Photonen nicht duplizieren lassen.
 	6) Sender und Empfänger nutzen die übertragenen Photonenwerte als Key.
 	
-9) Die Quanten sind verschränkt, sobald die eine Quante gemessen (abgehört) wird, wird auch die andere verändert.
+9) Die Quanten sind verschränkt. Sobald die eine Quante gemessen (abgehört) wird, wird auch die andere verändert.
 
 10)
 	* Die Photonen werden moduliert, das restliche Verfahren funktioniert wie bei 8 beschrieben.
@@ -109,7 +109,9 @@ Schlüsselmaterial und Zufallszahlen
 	* Soundkarte Rauschen
 	* Zugriffszeiten Harddisk (Varianz durch Luftturbulenzen im Gehäuse)
 	
-17) Hardwarebauteile, die einen Strom von Zufallszahlen liefern, die eine hohe Entropie aufweisen. z.B. instabile Diodenschaltungen oder Anzapfen des thermischen Rauschens.
+17) Hardwarebauteile, die einen Strom von Zufallszahlen liefern, die eine hohe Entropie aufweisen. z.B. 
+	* instabile Diodenschaltungen
+	* Anzapfen des thermischen Rauschens.
 
 18) Der IDQ besteht aus einer Taktung und zwei gegenseitig verschaltete Dioden, die einen instabilen Zustand herbeiführen (flackern / wildes hin- / herschalten) und damit zufällig 0 oder 1 liefern.
 
