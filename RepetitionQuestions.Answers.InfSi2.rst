@@ -214,11 +214,11 @@ Application Security
 33) 
 	OWASP Top 10
 		Die grössten Risiken:
-			A1) Injection
-			A2) Fehler in Authentifizierung und Session Management
-			A3) Cross-Site Scripting (XSS)
-			A4) Unsichere direkte Objektreferenzen
-			A5) Sicherheitsrelevante Fehlkonfiguration
+			1) Injection
+			2) Fehler in Authentifizierung und Session Management
+			3) Cross-Site Scripting (XSS)
+			4) Unsichere direkte Objektreferenzen
+			5) Sicherheitsrelevante Fehlkonfiguration
 	Kriterien
 		Die Risiken werden ermittelt durch eine Bewertung der Attacke, die Sicherheitslücke(n), das herrschende Sicherheitsmanagement für diesen Angriff, Technische Auswirkungen und Business Auswirkungen
 		
@@ -239,7 +239,8 @@ Application Security
 	* Bekanntheit der Verletzlichkeit
 	* Bemerken des Ausnützens
 	
-36) 1) Vor der Entwicklung: Sicherheitsdokumente bereitstellen und Vorhandensein im Ablauf überprüfen
+36)
+	1) Vor der Entwicklung: Sicherheitsdokumente bereitstellen und Vorhandensein im Ablauf überprüfen
 	2) Design: Requirements Reviews, insbesondere security Reviews machen
 	3) Development: Code Reviews
 	4) Development/Testing: Penetration Testing
