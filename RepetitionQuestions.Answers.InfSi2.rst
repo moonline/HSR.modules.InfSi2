@@ -254,3 +254,108 @@ Application Security
 
 38) Falsche oder keine TLS Protection. Beispiele: Kein Schutz von Datenbankverbindungen des Webservers zu einem externen Server, kein Schutz von Webseitebereichen die eine Authentifizierung erfordern (Passwort Klartextübertragung),  Falsch konfigurierte TLS Zertifikate, die den User mit Fehler und Warnmeldungen bombardieren.
 
+
+Web Application Security
+------------------------
+39) Die unteren Schichten sind heute relativ bewährt und grosse Angriffsmöglichkeiten gibt es immer weniger. Die Applikationen hingegen sind immer gleich verwundbar und werdne z.T. sogar schlampig programmiert.
+
+40) Eine Serverseitige Applikation übernimmt nicht ecsapte Parameter über Post oder Get und baut diese in einen SQL Befehl ein. Wird ein Parameter so gestaltet, das er zuerst den aktuellen Befehl abschliesset und dann neue Befehle anhängt, können beliebige Befehle auf der Datenbank ausgeführt werden.
+
+41) 
+	Wlist/Blist Filter
+		Bringen nur wenig
+	Prepared Statements
+		Verhindern SQL injections
+	Stored Procedures
+		Können SQL Injection verhindern, können aber selbst wieder Lücken auftun
+	Escaping
+		Verhindern SQL injection, müssen aber sehr konsequent durchgezogen werden
+	Wenige Privilegien
+		Verhindern SQL injection nicht, minimieren aber den Schaden.
+		
+42) Der Applikation wird vorgegaukelt, der User sei bereits authentifiziert. Z.B. durch direktes Anspringen der Seite mit geschützten Inhalten oder mitgeben von Parametern, die Zugriffserlaubnis signalisieren
+
+43) Weil damit eine Brute Force Attacke wesentlich vereinfacht wird. Gibt der Angreifer einen fingierten Usernamen und Passwort ein und er erhält die Meldung "Passwort falsch" so hat er bereits die Information erhalten, das es diesen user gibt. Unterschiedliche Antwortzeiten des Servers, je nach dem ob user oder passwort falsch, können einem Angreifer ebenfalls Informationen darüber liefern.
+
+44) Der Angreifer behält das Passwort bei und variiert den usernamen. Da Error Delay normalerweise auf den User gebunden ist, funktioniert dies.
+
+45) 
+	Authentisierung
+		Identität des Users klären
+	Authorisierung
+		Erlaubte Aktionen klären
+		
+46) 
+	* What I know: Passwörter, Slide-Figur, ...
+	* What I have: Chipkarte, rsa Key, ...
+	* What I am: Iris, Fingerabdruck, DNA, ...
+	
+47)
+	* Einem andern Benutzer werden Daten des vorhergehenden verraten
+	* Webentwickler können die Autocompletion über autocomplete=false abschalten
+	
+
+Data Leak Protection
+--------------------
+48) 
+	* Business basiert auf Vertrauen
+	* Geheime Informationen (z.B. Erfindungen noch ohne Patentschutz)
+	* Rechtliche Lage
+	
+49) Überall. Auf den Rechnern der User, auf mobilen Endgeräten, auf Druckern, Faxgeräten, Servern, im Altpapier, auf Ausdrucken
+
+50) 
+	* Aus dem Data Storage (Document Server, DB, ...)
+	* Unterwegs zwischen Data Storage und Client (Netzwerk)
+	* Auf Client Hardware
+	
+51) 
+	Egress Controll
+		Daten, die das Unternehmen verlassen werden kontrolliert
+		* Es wird versucht, keine Daten in unerlaubte Hände fallen zu lassen
+	Usage Controll
+		Es wird kontrolliert, was mit den Daten gemacht wird
+		* Es wird kontrolliert, was mit den Daten gemacht wird
+	Egress Controll+Usage Controll
+		Die beiden Verfahren können kombiniert werden. In erster Instanz werden die Daten daran gehindert das Unternehmen unerlaubt zu verlassen, in zweiter Instanz wird die unerlaubte Nutzung unterbunden.
+		
+52) Mit Testdaten wird oft sehr legere umgegangen, da sie ja scheinbar irellevant sind. Zumindest die ersten beiden Stufen von Testdaten können einem Angreifer jedoch eine Menge Informationen liefern:
+	Production Daten
+		Reale Daten
+	Substituted Test Data
+		Die Realen Daten werden mit Testdaten ersetzt. Es gibt ein Mapping zwischen den Testdaten und den Realen
+	Anonymized Test Data
+		Wie bei Substituted Test Data, nur gibt es kein Mapping.
+	Synthetic Test Data
+		Vollkommen erfundene Testdaten
+	
+53) Information Rights Management: Usage Controll + Encryption. IRM ist für innerhalb von Unternehmungen gedacht und beinhaltet nicht nur die Zugriffskontrolle auf die Information, sondern auch Edit, New, Publish, Print, ... Aktionen.
+
+54) Eine IRM Lösung von Microsoft, die für Microsoft Office Dokumente und E-mails IRM Schutz ermöglicht.
+
+55) Die Dokumente werden über eine Consumer Licence geschützt, die vom AD RMS Server der Firma entschlüsselt werden muss. Die Dokumente können nur zu Hause geöffnet werden, wenn dies erlaubt ist und der Key Server von extern verfügbar ist.
+
+56) Weil für AD RMS alle Applikationen zusammenarbeiten müssen und den Schutz unterstützen müssen. Erlaubt z.B. das BS das Anlegen von Dokumenten, für die es keinen Schutz gibt, so ist es bereits wieder möglich Daten aus der Unternehmung rauszubringen. AD RMS lässt sich überhaupt nicht mit "Bring your own device" kombinieren.
+
+57) 
+	* BYOD schafft den Mitarbeitern viele Möglichkeiten sich zu entfalten und nicht durch StandardIT an der Arbeit gehindert zu werden.
+	* BYOD schafft eine kaum kontrollierbare IT Landschaft, in der es auch sehr schwierig ist Mirarbeitern bestimmte Operationen mit Daten zu verbieten.
+	* Das Unternehmen verliert ein Stück weit die Kontrolle, wo überall Daten gespeichert sind
+	* Gehen Geräte verloren, werden Datenverluste möglicherweise viel zu spät bemerkt.
+	
+58)
+	* In sehr inhomogenen Umgebungen ist IRM chancenlos
+	* Benötigen Mitarbeiter spontan und mobil neue Zugriffe / Aktionen, kann IRM nicht mithalten
+	* Die Erweiterung von IRM um weitere Applikationen ist aufwendig
+	* Grundsätzlicher Datiezugriff (auch wenn sie verschlüsselt sind) kann mit IRM nicht verhindert werden
+		
+59)
+	a) Nur sehr wage angaben zum Autor, dahinter steckt eine Antivir/Firewall Firma, Datenherkunft z.T. unsicher -> nicht sehr vertrauenswürdig
+	b) 
+		* gut gesinnte Insider (versehentlich)
+		* zielgerichtete Attacken
+		* böswillige Insider
+		
+		
+		
+		
