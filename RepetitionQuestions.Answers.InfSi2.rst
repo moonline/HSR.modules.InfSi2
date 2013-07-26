@@ -297,65 +297,243 @@ Web Application Security
 
 Data Leak Protection
 --------------------
-48) 
-	* Business basiert auf Vertrauen
-	* Geheime Informationen (z.B. Erfindungen noch ohne Patentschutz)
-	* Rechtliche Lage
+48
+.. 
+* Business basiert auf Vertrauen
+* Geheime Informationen (z.B. Erfindungen noch ohne Patentschutz)
+* Rechtliche Lage
+
+49
+..
+Überall. Auf den Rechnern der User, auf mobilen Endgeräten, auf Druckern, Faxgeräten, Servern, im Altpapier, auf Ausdrucken
+
+50
+..
+* Aus dem Data Storage (Document Server, DB, ...)
+* Unterwegs zwischen Data Storage und Client (Netzwerk)
+* Auf Client Hardware
+
+51
+.. 
+Egress Controll
+	Daten, die das Unternehmen verlassen werden kontrolliert
+	* Es wird versucht, keine Daten in unerlaubte Hände fallen zu lassen
+Usage Controll
+	Es wird kontrolliert, was mit den Daten gemacht wird
+	* Es wird kontrolliert, was mit den Daten gemacht wird
+Egress Controll+Usage Controll
+	Die beiden Verfahren können kombiniert werden. In erster Instanz werden die Daten daran gehindert das Unternehmen unerlaubt zu verlassen, in zweiter Instanz wird die unerlaubte Nutzung unterbunden.
 	
-49) Überall. Auf den Rechnern der User, auf mobilen Endgeräten, auf Druckern, Faxgeräten, Servern, im Altpapier, auf Ausdrucken
+52
+..
+Mit Testdaten wird oft sehr legere umgegangen, da sie ja scheinbar irellevant sind. Zumindest die ersten beiden Stufen von Testdaten können einem Angreifer jedoch eine Menge Informationen liefern:
 
-50) 
-	* Aus dem Data Storage (Document Server, DB, ...)
-	* Unterwegs zwischen Data Storage und Client (Netzwerk)
-	* Auf Client Hardware
+Production Daten
+	Reale Daten
+Substituted Test Data
+	Die Realen Daten werden mit Testdaten ersetzt. Es gibt ein Mapping zwischen den Testdaten und den Realen
+Anonymized Test Data
+	Wie bei Substituted Test Data, nur gibt es kein Mapping.
+Synthetic Test Data
+	Vollkommen erfundene Testdaten
 	
-51) 
-	Egress Controll
-		Daten, die das Unternehmen verlassen werden kontrolliert
-		* Es wird versucht, keine Daten in unerlaubte Hände fallen zu lassen
-	Usage Controll
-		Es wird kontrolliert, was mit den Daten gemacht wird
-		* Es wird kontrolliert, was mit den Daten gemacht wird
-	Egress Controll+Usage Controll
-		Die beiden Verfahren können kombiniert werden. In erster Instanz werden die Daten daran gehindert das Unternehmen unerlaubt zu verlassen, in zweiter Instanz wird die unerlaubte Nutzung unterbunden.
-		
-52) Mit Testdaten wird oft sehr legere umgegangen, da sie ja scheinbar irellevant sind. Zumindest die ersten beiden Stufen von Testdaten können einem Angreifer jedoch eine Menge Informationen liefern:
-	Production Daten
-		Reale Daten
-	Substituted Test Data
-		Die Realen Daten werden mit Testdaten ersetzt. Es gibt ein Mapping zwischen den Testdaten und den Realen
-	Anonymized Test Data
-		Wie bei Substituted Test Data, nur gibt es kein Mapping.
-	Synthetic Test Data
-		Vollkommen erfundene Testdaten
+53
+..
+Information Rights Management: Usage Controll + Encryption. IRM ist für innerhalb von Unternehmungen gedacht und beinhaltet nicht nur die Zugriffskontrolle auf die Information, sondern auch Edit, New, Publish, Print, ... Aktionen.
+
+54
+..
+Eine IRM Lösung von Microsoft, die für Microsoft Office Dokumente und E-mails IRM Schutz ermöglicht.
+
+55
+..
+Die Dokumente werden über eine Consumer Licence geschützt, die vom AD RMS Server der Firma entschlüsselt werden muss. Die Dokumente können nur zu Hause geöffnet werden, wenn dies erlaubt ist und der Key Server von extern verfügbar ist.
+
+56
+..
+Weil für AD RMS alle Applikationen zusammenarbeiten müssen und den Schutz unterstützen müssen. Erlaubt z.B. das BS das Anlegen von Dokumenten, für die es keinen Schutz gibt, so ist es bereits wieder möglich Daten aus der Unternehmung rauszubringen. AD RMS lässt sich überhaupt nicht mit "Bring your own device" kombinieren.
+
+57
+..
+* BYOD schafft den Mitarbeitern viele Möglichkeiten sich zu entfalten und nicht durch StandardIT an der Arbeit gehindert zu werden.
+* BYOD schafft eine kaum kontrollierbare IT Landschaft, in der es auch sehr schwierig ist Mirarbeitern bestimmte Operationen mit Daten zu verbieten.
+* Das Unternehmen verliert ein Stück weit die Kontrolle, wo überall Daten gespeichert sind
+* Gehen Geräte verloren, werden Datenverluste möglicherweise viel zu spät bemerkt.
 	
-53) Information Rights Management: Usage Controll + Encryption. IRM ist für innerhalb von Unternehmungen gedacht und beinhaltet nicht nur die Zugriffskontrolle auf die Information, sondern auch Edit, New, Publish, Print, ... Aktionen.
+58
+..
+* In sehr inhomogenen Umgebungen ist IRM chancenlos
+* Benötigen Mitarbeiter spontan und mobil neue Zugriffe / Aktionen, kann IRM nicht mithalten
+* Die Erweiterung von IRM um weitere Applikationen ist aufwendig
+* Grundsätzlicher Datiezugriff (auch wenn sie verschlüsselt sind) kann mit IRM nicht verhindert werden
+		
+59
+..
+a)
+~~
+Nur sehr wage angaben zum Autor, dahinter steckt eine Antivir/Firewall Firma, Datenherkunft z.T. unsicher -> nicht sehr vertrauenswürdig
 
-54) Eine IRM Lösung von Microsoft, die für Microsoft Office Dokumente und E-mails IRM Schutz ermöglicht.
+b)
+~~
+* gut gesinnte Insider (versehentlich)
+* zielgerichtete Attacken
+* böswillige Insider
 
-55) Die Dokumente werden über eine Consumer Licence geschützt, die vom AD RMS Server der Firma entschlüsselt werden muss. Die Dokumente können nur zu Hause geöffnet werden, wenn dies erlaubt ist und der Key Server von extern verfügbar ist.
+		
+Anonymität
+==========
 
-56) Weil für AD RMS alle Applikationen zusammenarbeiten müssen und den Schutz unterstützen müssen. Erlaubt z.B. das BS das Anlegen von Dokumenten, für die es keinen Schutz gibt, so ist es bereits wieder möglich Daten aus der Unternehmung rauszubringen. AD RMS lässt sich überhaupt nicht mit "Bring your own device" kombinieren.
+60
+--		
+* Recht auf Schutz der Privatsphäre
+* Meinungsfreiheit
+* Geheimdienste schneiden Verkehr mit
+* Aufdecken von Missständen (Whistle Blowing)
 
-57) 
-	* BYOD schafft den Mitarbeitern viele Möglichkeiten sich zu entfalten und nicht durch StandardIT an der Arbeit gehindert zu werden.
-	* BYOD schafft eine kaum kontrollierbare IT Landschaft, in der es auch sehr schwierig ist Mirarbeitern bestimmte Operationen mit Daten zu verbieten.
-	* Das Unternehmen verliert ein Stück weit die Kontrolle, wo überall Daten gespeichert sind
-	* Gehen Geräte verloren, werden Datenverluste möglicherweise viel zu spät bemerkt.
-	
-58)
-	* In sehr inhomogenen Umgebungen ist IRM chancenlos
-	* Benötigen Mitarbeiter spontan und mobil neue Zugriffe / Aktionen, kann IRM nicht mithalten
-	* Die Erweiterung von IRM um weitere Applikationen ist aufwendig
-	* Grundsätzlicher Datiezugriff (auch wenn sie verschlüsselt sind) kann mit IRM nicht verhindert werden
-		
-59)
-	a) Nur sehr wage angaben zum Autor, dahinter steckt eine Antivir/Firewall Firma, Datenherkunft z.T. unsicher -> nicht sehr vertrauenswürdig
-	b) 
-		* gut gesinnte Insider (versehentlich)
-		* zielgerichtete Attacken
-		* böswillige Insider
-		
-		
-		
-		
+61
+--
+Der Remailer sendet eine Mail eines User unter einer andern Identität weiter und stellt dem User Mails entsprechend auch zu. Der Remailer entfernt alle Spuren, die auf die ursprüngliche Identität hinweisen.
+
+* Wird der Remailer-Server auseinandergenommen, so fliegt die Identität auf.
+* Single Point of Failure
+
+62
+--
+Wer den Remailer in seiner Gewahlt hat, kennt das Identitätsmapping und kann den Service lahmlegen.
+
+
+Mix Net
+------
+
+63
+..
+* verteiltes Anonymisierungsnetzwerk
+* Den Weg durch das Netzwerk kennt nur der User
+* Liegen die Server in unterschiedlichen Ländern, so ist es den Gerichten kaum möglich, gegen das Netzwerk vorzugehen
+
+64
+..
+Der Client verschlüsselt das Paket inkl. den Adressen zwiebelschalenmässig für jede Knoten. Jeder Knote hat nur den Key, um seine Schicht zu entfernen. Anschliessend füllt er die Adressfelder mit Junk und Schickt das Paket an den nächsten Knoten, der wiederum nur seine Schicht auspacken kann.
+
+65
+..
+Knoten unterwandert
+	* Der Inhalt ist sicher, weil der Knoten nur das Verschlüsselte Paket sieht.
+	* Der Angreifer weiss nur den vorherigen und den nächsten Knoten
+Exitknoten unterwandert
+	* Ist die Kommunikation unverschlüsselt, kommt der Angreifer an den Inhalt, kann ihn aber zu keinem User zuordnen.
+	* Der Angreifer weiss die Zieldestination des Pakets (z.B. 20min.ch)
+
+66
+..
+Damit Rechtshilfegesuche erschwert werden. Grenzüberschreitende Rechtshilfegesuche sind sehr schwierig umzusetzen.
+
+Die Gerichte gehen als erstes auf den Exit Knoten los. Ist der Datenverkehr jedoch verschlüsselt, ist dieser aus dem Schneider.
+
+67
+..
+Ein Mix Knoten entschlüsselt den Datenverkehr, misch die Ein- und Ausgangspakete, damit keine Korrelation möglich ist und löscht doppelte (Replay-Attacken).
+
+68
+..
+High-Latency
+	* Grosser Buffer
+	* Mischt den Verkehr stark
+	* Korrelation zwischen Eingangspakten und Ausgangspakten schwierig
+	* Verzögert den Verkehr stark
+Low-Latency
+	* Kleiner Buffer
+	* Mischt den Verkehr schwach
+	* Korrelation zwischen Eingangspaketen durch Intensive überwachung möglich
+	* Verzögert den Verkehr weniger stark
+	* Die gleiche Anonymisierungskette sollte nicht zu lange gebraucht werden
+
+69
+..
+Ist kaum Verkehr da, so ist die Anonymisierung im Eimer
+
+
+Tor
+---
+70
+..
+Tor ist ein Anonymisierungsnetzwerk, das ursprünglich von der Navy entwickelt wurde.
+
+71
+..
+Tor Datenformat::
+
+
+	| CircId | CMD | Data |
+
+	| CircId | Relay | StreamID | Digest | Len | CMD | Data |
+
+	CircId: Zuordnung bei jedem Knoten zwischen Hin-/Rückverkehr
+	StreamId: End-zu-End Stream ID (nur Exit Knoten bekannt)
+
+
+72
+..
+Über die CircId in jedem Paket und in jeder Schale
+
+73
+..
+Tor Circuit
+	1) Client tauscht mit A Schlüssel aus
+	2) Client tasucht mit B Schlüssel aus. Verkehr läuft über A:
+		* verschlüsselt von Client bis A mit KeyA)
+	3) Client tauscht mit C Schlüssel aus. Verkehr läuft über A, B:
+		* verschlüsselt von Client bis B mit KeyB
+		* verschlüsselt von Client bis A mit KeyA
+	4) Client startet TCP Stream mit Handshake zu Target. Verkehr läuft über A, B, C
+		* verschlüsselt von Client bis C mit KeyC
+		* verschlüsselt von Client bis B mit KeyB
+		* verschlüsselt von Client bis A mit KeyA
+	5) Client sendet Daten (z.B. Anfrage) an Target. Verkehr läuft über A, B, C
+		* verschlüsselt von Client bis C mit KeyC
+		* verschlüsselt von Client bis B mit KeyB
+		* verschlüsselt von Client bis A mit KeyA
+	6) Target antwortet mit einem oder mehreren Datenströmen. Verkehr läuft über C, B, A
+		* verschlüsselt von C bis Client mit KeyC
+		* verschlüsselt von B bis Client mit KeyB
+		* verschlüsselt von A bis Client mit KeyA
+
+Tor Circuit Pakete
+	::
+
+		Client		                             | Zieladdr | Absender | Data | Padding |
+		KeyC		                     | C | B | Encrypted Package (Client->Target)   |
+		KeyB		             | B | C | Encrypted Package (B->C)                     |
+		KeyA		| A | Client | Encrypted Package (A->B)                             |
+
+		A			| A | Client | Encrypted Package (A->B)                             |
+					| Junk       | B | C | Encrypted Package (B->C)                     |
+
+		B			| Junk       | B | C | Encrypted Package (B->C)                     |
+					| Junk               | C | B | Encrypted Package (Client->Target)   |
+
+		C			| Junk               | C | B | Encrypted Package (Client->Target)   |
+					| Junk                       | Zieladdr | Absender | Data | Padding |
+
+		Target		| Junk                       | Zieladdr | Absender | Data | Padding |
+
+
+Rückweg:
+	Die Pakete werden bei jedem Knoten mit einer Schale versehen und vom Client ausgepackt
+
+74
+..
+* Ein Server gibt eine Adresssequenz irgendwo bekannt.
+* Wer mit dem Server Kontakt aufnehmen will, Adressiert diese Sequenz an einen ahnungslosen Rendez-Vous Server
+* Server erhält Anfrage und meldet sich bei Rendez-Vous Server
+* Kommunikation läuft über Rendez-Vous Server
+
+75
+..
+Aufgrund des Exit Knotens und Javascript Eigenschaften, die der Browser ausplaudert.
+
+**Massnahmen**
+
+* Javascript abschalten
+* Den Pfad im Tor Netzwerk über andere Knoten neu aufbauen
+
