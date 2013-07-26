@@ -403,7 +403,7 @@ Wer den Remailer in seiner Gewahlt hat, kennt das Identitätsmapping und kann de
 
 
 Mix Net
-------
+-------
 
 63
 ..
@@ -501,21 +501,21 @@ Tor Circuit
 Tor Circuit Pakete
 	::
 
-		Client		                             | Zieladdr | Absender | Data | Padding |
-		KeyC		                     | C | B | Encrypted Package (Client->Target)   |
-		KeyB		             | B | C | Encrypted Package (B->C)                     |
-		KeyA		| A | Client | Encrypted Package (A->B)                             |
+		Client                              | Zieladdr | Absender | Data | Padding |
+		KeyC                        | C | B | Encrypted Package (Client->Target)   |
+		KeyB                | B | C | Encrypted Package (B->C)                     |
+		KeyA   | A | Client | Encrypted Package (A->B)                             |
 
-		A			| A | Client | Encrypted Package (A->B)                             |
-					| Junk       | B | C | Encrypted Package (B->C)                     |
+		A      | A | Client | Encrypted Package (A->B)                             |
+		       | Junk       | B | C | Encrypted Package (B->C)                     |
 
-		B			| Junk       | B | C | Encrypted Package (B->C)                     |
-					| Junk               | C | B | Encrypted Package (Client->Target)   |
+		B      | Junk       | B | C | Encrypted Package (B->C)                     |
+		       | Junk               | C | B | Encrypted Package (Client->Target)   |
 
-		C			| Junk               | C | B | Encrypted Package (Client->Target)   |
-					| Junk                       | Zieladdr | Absender | Data | Padding |
+		C      | Junk               | C | B | Encrypted Package (Client->Target)   |
+		       | Junk                       | Zieladdr | Absender | Data | Padding |
 
-		Target		| Junk                       | Zieladdr | Absender | Data | Padding |
+		Target | Junk                       | Zieladdr | Absender | Data | Padding |
 
 
 Rückweg:
