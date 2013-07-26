@@ -581,12 +581,15 @@ L2TP wird mit IPSec getunnelt, indem das L2TP Paket von einem IPSec und einem UD
 
 	| IP [/// UDP | L2TP [\\\ PPP | IP, IPX | Data \\\]///]
 
+
 82
 ..
 DatenPakete werden mit TCP gewrappt und somit verschlüsselt.
 
 ::
+
 	| IP | TCP | SSL [/// IP | Data ///]
+
 
 83
 ..
@@ -610,3 +613,71 @@ MPLS
 
 84
 ..
+* MPLS Sind Labels, die der Provider im Backbone Netzwerk vor die Pakete hängt, damit sie einfacher zu routen sind.
+* Den Paketen wird ein Destination Label und ein Label, das jeweils den nächsten Knoten anzeigt, vorangestellt.
+
+Shim Header::
+
+	| Label,  ClassOfService, B, TimeToLive | IP ... |
+
+
+IPSec Transport Mode
+--------------------
+
+85
+..
+**Mit AH**
+
+* IPSec verschlüsselt den Payload des IP Paketes und authentifiziert das IP Paket.
+* Zwischen dem IP Header und dem Payload wird der Authentication Header eingefügt.
+* IPSec ohne Authentsierung ist anfällig auf IP Spoofing oder Package Modification
+* Authentication Header enthält MAC für gesammtes Paket
+
+::
+
+		| Orig. IP Header | Authentication Header [/// TCP | Payload ///]
+
+
+**Mit ESP**
+
+* IPsec verschlüsselt den Payload über den Encapsulation Security Payload ESP
+* ESP Schützt zwar das Paket, jedoch nicht den IP Header im Vergleich zu AH
+
+::
+
+	| Orig. IP Header | ESP | [/// TCP Paket | Payload | ESP Trailer ///] ESP Authentication |
+
+
+
+86
+..
+?
+
+IPSec Tunnel Mode
+-----------------
+
+87
+--
+* IPSec Tunnel Mode Wrapt das komplette IP Paket in ein ESP geschütztes IP Paket
+* Dadurch ist das originale IP Paket komplett verborgen
+* Mehr Overhead als Transport Mode
+* Authentifiziert ist der ESP Header, nicht aber der äussere IP Header
+
+::
+
+	| IP Header | ESP [/// IP | TCP | Data | ESP Trailer ///] ESP Authentication |
+
+
+88
+..
+* Statt Hashing und Verschlüsselung einzeln zu machen, wird gleichauf's Mal der Hash erzeugt und Verschlüsselt
+* Wesentlich effizienter als wenn einzeln gehashed und verschlüsselt wird
+* Overhead Hängt von der Verschlüsselung ab. Empfohlen AES-GSM weil schnell und Overhead klein
+
+
+Internet Key Exchange
+---------------------
+
+89
+..
+
