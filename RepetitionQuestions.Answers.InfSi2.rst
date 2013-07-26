@@ -537,3 +537,76 @@ Aufgrund des Exit Knotens und Javascript Eigenschaften, die der Browser ausplaud
 * Javascript abschalten
 * Den Pfad im Tor Netzwerk über andere Knoten neu aufbauen
 
+
+VPN
+===
+76
+--
+* Der Datenverkehr wird mit dem Point to Point Protocoll getunnelt.
+* Keine Verschlüsselung, nur Authentication über PAP (Passwort), Challenge Response (CHAP) oder Extensible Authentication Protocoll EAP
+* Nicht sehr sicher, keine Verschlüsselung
+
+77
+--
+Mit ECP wird der Payload des PPP Protocols verschlüsselt über 3DES mit 168 bit Keys
+
+78
+--
+Siehe 76.
+
+
+Layer2/3/4 VPN
+--------------
+79
+..
+* Der L2TP Payload wird mit LCP verschlüsselt
+* Gleiche Authentisierung wie PPP
+
+::
+
+	| L2TP [\\\ PPP | IP, IPX | Data \\\]
+
+80
+..
+* Verschlüsselung mit LCP
+* LCP kann auch ohne Verschlüsselung genutzt werden -> keine starke Verschlüsselung
+* L2TP ohne Authentisierung ist anfällig auf Replay Attacken
+
+81
+..
+L2TP wird mit IPSec getunnelt, indem das L2TP Paket von einem IPSec und einem UDP Paket gewrappt wird.
+-> IPSec ist sicher und zuverlässig, aber etwas kompliziert
+
+::
+
+	| IP [/// UDP | L2TP [\\\ PPP | IP, IPX | Data \\\]///]
+
+82
+..
+DatenPakete werden mit TCP gewrappt und somit verschlüsselt.
+
+::
+	| IP | TCP | SSL [/// IP | Data ///]
+
+83
+..
+L2TP Tunnel
+	* Nicht sicher
+L2TP über IPSec
+	* Sicher aber unnötig Overhead
+IPSec Tunnel
+	* Sicher
+	* Wenig Oberhead, da 
+	* etwas kompliziert
+	* Alle höheren Layer sind unsichtbar
+TLS
+	* Simpel, kann jeder Browser
+	* Verschlüsselung nur auf den höheren Layern
+	* Unnötigen Overhead, da im TCP Paket nochmal IP Pakete sind.
+
+
+MPLS
+----
+
+84
+..
