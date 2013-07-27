@@ -804,6 +804,67 @@ Paket::
 		| IP | UDP | IKE Header | Payload |
 
 
+DNS Sec
+=======
+
+103
+---
+Die Abfrage des ISP an den Root Server wird abgefangen und eine falsche IP  für den zuständigen Nameserver zurückgesendet.
+Dadurch gehen sämmtliche Anfragen für diese Zone (z.B. die .net Zone) an den DNS Server des Angreifers und dieser kann beliebige Antworten liefern und den Client so an einen falschen Server umleiten.
+
+104
+---
+* Client sendet Anfrage an DNS Server (wenn keiner Konfiguriert -> DNS Server des ISP)
+* Dieser liefert die Antwort aus seinem Cache oder antwortet wie folgt:
+	Rekursive Abfrage
+		* ISP Nameserver Fragt Root Server
+		* Fragt vom Root Server genannten zuständigen TLD Nameserver
+		* Fragt vom TLD Server genannten zuständigen .....
+	Nicht rekursive Anfrage
+		* ISP Nameserver antwortet: keine Ahnung, frag Root Server
+		* Client fragt Root Server
+		* Client fragt vom Root Server genannten zuständigen TLD Nameserver
+		* Client fragt...
+
+105
+---
+* Jeder Server besitzt einen KSK (Priate Key, hoch geheim) und einen ZSK (privater Arbeitskey, vom KSK signiert)
+* Der Root DNS Server signiert mit seinem ZSK die KSK's der Stufe darunter
+* Die Stufe darunter signiert mit dem ZSK die KSK's der Stufe darunter
+* ...
+
+106
+---
+DNSSEC Resource Record Signature
+
+107
+--
+* DNS Based Authentication of Naming Entries.
+* Zertifizierung von Websever über DNS SEC.
+
+108
+---
+* Bei der Anfrage a den DNS server liefert dieser gleich den TLSA Record mit, der das CA Zertifikat beinhaltet
+* Der Browser kann damit das Zertifikat des Webservers überprüfen ohne eine Anfrage an die CA
+
+109
+---
+* Self Signed Zertifikate werden im Zonenfile hinterlegt. Die Zone ist durch die DNS SEC Hirarchie gesichert.
+* Der Server liefert bei der DNS Abfrage das Zertifikat mit
+* Der Browser vergleicht das Zertifikat vom DNS Server mit dem Zertifikat vom Webserver
+* Sind die beiden Zertifikate identisch, so befindet sich der Client beim richtigen Server
+* Mit dem Im Zertifikat enthaltenen Public Key kann der Browser gleich eine TLS Verbindung aufbauen
+
+110
+---
+Die Zertifikate können Seld-Signed sein, weil über DNS SEC das Eigene Zertifikat (mit dem das Self-signed Server Zertifikat signiert wurde) ausgeliefert wird, analog zur Auslieferung eines CA Zertifikates
+
+111
+---
+Der Browser kann über DNSSEC den RSA Key verifizieren.
+
+112
+---
 
 
- 
+
