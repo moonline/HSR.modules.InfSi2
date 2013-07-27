@@ -680,4 +680,130 @@ Internet Key Exchange
 
 89
 ..
+Das Internet Key Exchange Protocol übernimmt die Schlüsselverwaltung für IPSec.
+Ike Basiert auf UDP und handelt in einem ersten Schritt die Security Association SA aus, die im zweiten Schritt etabliert wird.
 
+90
+..
+Die Security Association definiert die verwendete Verschlüsselung und Authentifizierung und wird zwischen den Endstellen ausgehandelt.
+
+
+IKEv1
+.....
+
+91
+~~
+* Initiator schickt SA Angebot
+	Paket::
+
+		| IKE Header | SA Proposal |
+
+
+* Responder antwortet und bestätigt SA mit ähnlichen Paket
+* Initiator macht DH Key Exchange
+	Paket::
+
+		| IKE Header | DH Key Exchange | Ni |
+
+
+* Responder macht ebenfalls Key Exchange mit ähnlichem Paket
+* Initiator überträgt verschlüsselt ID, Zertifikat und Signatur
+	Paket::
+
+		 | IKE Header [/// ID | Zertifikat | Signatur ///]
+
+
+* Responder antwortet mit gleichen Informationen
+
+92
+~~
+Statt dem Zertifikat und der Signatur wird der Hash des Passwortes übertragen (in den beiden letzten Paketen).
+Weil der Benutzer ebenfalls verschlüsselt ist, müsste ein VPN Router alle Benutzer durchprobieren wenn dynamisches Routing eingesetzt wird -> darum wird der Mode nie verwendet.
+
+93
+~~
+* Im Agressive Mode werden bereits im ersten Paket nebst dem Proposal DH Keys, eine Zufallszahl und die ID übertragen.
+	Paket::
+
+		 | IKE Header | SA Proposal | DH Key Exchange | Ni | IDi |
+
+
+* Der Responder sendet als Antwort ebenfalls DH Keys, Zufallszahl, ID und noch einen Hash.
+	Paket::
+
+		 | IKE Header | SA Response | DH Key Exchange | Nr | IDr | Hashr |
+
+
+* Der Initiator überträgt ebenfalls den Hash offen
+* Die ID's können gesnifft werden
+* Hash könnte durch offline-Attacke geknackt werden, desto simpler das Passwort, desto einfacher
+
+94
+~~
+* Der Man In The Middle simuliert einen Hotspot (hängt sich damit zwischem Client und VPN Gateway) und snifft ID und Passworthash, den er anschliessend knackt.
+* Der VPN Gateway authentifiziert sich beim Client nur mit dem Gruppenpasswort und das kennt onehin jeder in einer Firma.
+
+95
+~~
+Quick Mode: Kann eingesetzt werden, wenn beide Seiten die genau gleiche SA vorschlagen. Kann zur Erstverbindung genutzt werden, wird jedoch vor allem zum Erneuern der Verbindung genutzt.
+
+
+IKEv2
+.....
+
+96
+~~
+* Weniger Pakete
+* Bereits beim ersten Austausch werden genügend Informationen für die Verschlüsselung übertragen, sodass ab dem zweiten Austausch verschlüsselt kommuniziert wird
+	Jeweils ersten Paket von I und R::
+
+		 | IKE Header | SA | KE | N |
+
+
+* Nur die eine Seite (I) macht retransmitt bei Paketverlust -> keine doppelten Sessions mehr
+* Gateway wählt automatisch Trafic Selector
+
+97
+~~
+Der Initiator schickt beim zweiten Austausch nebst IDi, Zertifikat und IDr eine weitere SA mit inklusiv Authentication mit, die der Responder bestätigt
+
+Pakte::
+
+	| IKE Header [/// IDi | Cert | IDr | Authentication | SA | TS | TS ///]
+
+
+98
+~~
+Statt mit SA und DH Keys zu antworten, sendet der Responder ein Cookie mit dem Auftrag, die Anfrage zusammen mit dem Cookie nochmals zu senden. Erst dann berechnet der Responder den DH Key und antwortet.
+
+99
+~~
+Der Initiator sendet eine SA mit Zufallszahl, Key Exchange und TS im verschlüsselten Paket. Der Responder antwortet entsprechend.
+
+100
+~~~
+VPN zwischen Standorten
+	Zwei Standorte werden zwischen zwei VPN Gateways mit einem VPN Tunnel verbunden.
+VPN Remote Access
+	Zwischen einem VPN Gateway an einem Standort und einem remote Client wird ein VPN Tunnel aufgebaut. Virtuelle IP's helfen dem Router den Remote Client intern richtig zu routen.
+
+101
+~~~
+Extendended Authentication XAUTH
+	Proprietärer Standard zur externen Authentifizierung
+IKEv2 EAP
+	Authentication über EAP, Übertragung im AUTH Part des Paketes
+
+102
+~~~
+* Der Initiator sendet seine IP als Hash mit. Stimmt der Hash nicht überein, so ist ein NAT in der Verbindung.
+* Die VPN Pakete werden in UDP getunnelt um durch das NAT zu kommen.
+
+Paket::
+
+		| IP | UDP | IKE Header | Payload |
+
+
+
+
+ 
