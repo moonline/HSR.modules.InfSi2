@@ -1065,4 +1065,127 @@ Schreibschutz
 	* Verhindert den Angriff
 
 
+Smart Cards
+===========
 
+129
+---
+Smart Cards können Daten speichern und besitzen je nach Modell einen Prozessor, ein USB Interface, Drahtlos Schnittstellen Tasten und sogar ein Display.
+
+Ziel einer Smart Card ist das sichere Aufbewahren von Schlüsseln. Je nach Modell kann die Smart Card gleich Daten mit diesem Schlüssel signieren. Der Schlüssel ist gegen Überschreiben und Auslesen geschützt.
+
+130
+---
+a) Memory Card
+..............
+* Kann Daten speichern und ist gegen Veränderung geschützt
+* Beispiel: Telefonkarte
+
+b) USB Token
+............
+* Karte und USB Kontroller als Stick umgesetzt.
+* Hohe Transferrate
+* Teuer
+
+c) SIM Card
+...........
+* einfache Chip-Karte
+* Speichert Daten
+
+d) Crypto Card
+..............
+* Karte mit RSA unterstützung
+* BS ist im ROM vor Veränderungen geschützt
+
+e) Java Card
+............
+* Auf der Karte läuft ein minimal Java BS
+* BS kann über Profiles aktualisiert werden
+
+131
+---
+* Batterielose Karten mit Drahtlosschnittstelle
+* Der Prozessor wird über die Luft mit Energie versorgt, daher Distanz zum Endpunkt nur gering
+
+132
+---
+Smart Cards mit integriertem E-Ink Display, auf dem Zahlen oder Buchstaben dargestellt werden können.
+
+Dislay Cards können z.B. Einmahl-Tokens für E-banking anzeigen
+
+133
+---
+* Near Field Communication
+* Über eine Drahtlosschnittstelle kann ein ausgerüstetes Endgerät mit der Karte oder dem Smartphone mit NFC kommunizieren
+* Mit NFC können digital Geldbörsen umgesetz werden
+
+**Secure NFC**
+
+* Das NFC Modul ist über die Sim Karte abgesichert, um den Missbrauch durch Malware zu vermeiden.
+* Die SIM Karte stellt ein Sicherheitsmodul in der Kette "APP -> SIM -> NFC" dar.
+* Über die SIM kann mit NFC auch DRM umgesetz werden
+* SIM und NFC Module kommunizieren über das Single Wire Protocoll SWP
+
+134
+---
+Vcc, GND: Speisung, Masse
+RST: Zur Initialisierung. Gibt z.B. Kartentyp zurück
+SWP: Single Wire Prtocoll, zum Beispiel für Kommunikation mit NFC Module
+CLK: Extern zugeführter Takt (Clock)
+AUX: USB
+
+135
+---
+Challenge/Response
+	Es wird gar kein Key ausgetauscht
+Security By Obscurity
+	Die Hardwarebausteine werden auf der Plattine wild vermischt. Wer den Bauplan nicht kennt, findet sich nicht zurecht
+Leitende Deckschicht
+	Die Deckschicht des Gusses stellt den oberen Teil eines Kondensators dar. Wird sie weggeätzt um Zugang zur Schaltung zu kriegen, bemerkt dies der Prozessor und zerstört die Karte
+Scrambling
+	Scrambling Algorithmus vertauscht RAM und EEPROM Speicherzellen. Nur werden den Alg. kennt, kommt an die Daten.
+
+136
+---
+* Es besitzt eine Ordnerhirarchie, die einem Masterfile untergeordnet ist
+* Ordner besitzen Identifier und Namen
+* Dateien besitzen einen Head mit Informationen wie einem Identifiert und Metadaten sowie einem Content Pointer
+* Dateiheader werden in einem Bereich abgelegt, der selten beschrieben werden soll, body in einem Bereich, der mehr Schreibzyklen verkaftet
+
+137
+---
+* Command Message: Besteht aus Header und Body
+* Response Message: Besteht aus Body und Trailer
+
+138
+---
+Unterstützen Karten die standartisierten Interfaces PC/SC oder PKCS#11, so können über diese mit der Karte kommuniziert werden, bzw. Daten ausgetauscht werden.
+
+139
+---
+
+140
+---
+Prepaid Karten (Vorauszahlung)
+	* Telefonkarten
+
+Electronic Purses (Vorauszahlung)
+	* CASH
+	* Modox
+
+Debit Cards (Echtzeitbezahlung)
+	* Maestro Karte
+	* Bank Karte
+
+Kreditkarten (spätere Bezahlung)
+	* Master
+	* Visa
+
+141
+---
+* Single Sign On
+* Public Key Kerberos Authentication
+* TLS Authentication
+* S/Mime Signatur und Verschlüsselung
+* Softwaresignierung
+* VPN Authentication
