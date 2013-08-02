@@ -1035,4 +1035,34 @@ Ein zentraler Metadata Map Service ermöglicht nebst der Messung des Gesundheits
 Gegen Lieing Endpoints hilft TNC/NAC nicht. Der Client kann dem Server beliebige Messerte vorgaukeln.
 
 
+Buffer Overflow
+===============
+
+127
+---
+Entsprechend gestaltete Pakete werden in so grossen Mengen an den Empfänger gesandt, bis die Paketinhalte den Buffer übersteigen und in einen Bereich mit ausführbarem Code geraten. Sobald das Programm diese Programmstelle aufruft, wird der eingeschleuste Code ausgeführt.
+
+**Beispiel**
+* Angreifer überflutet Buffer so, das die Adresse zu seinem über Buffer Overflow eingeschleusten Codefragment den Bereich mit der Rücksprungadresse auf dem Stack überschreibt.
+* Sobald die Funktion verlassen wird, wird die kompromitierte Rücksprungadresse aufgerufen und der Code des Angreifers ausgeführt
+* Den Bereich zwischen dem Buffer und der Rücksprungadresse muss der Angreifer mit Müll überschreiben
+* Der Angreifer kann als Müll nicht 0 nehmen, weil dies den String beenden würde.
+
+128
+---
+Stack Randomisation
+	* Stack Inhalte werden randomisiert angeordnet.
+	* Verringert die Wahrscheinlichkeit, das der Angreifer den Rücksprungpointer trifft
+	* Verhindert Angriff nicht
+
+Canary
+	* Vor der Rücksprungadresse wird ein Bereich mit bekanntem Inhalt (meisst 0, warum siehe 127) gefüllt.
+	* Überschreibt der Angreifer den Stack bis zur Rücksprungadresse, so hat sich der Inhalt des Bereiches geändert
+	* Durch mehrfachen Bufferoverflow kann das Canary wiederhergestellt werden, ist aber sehr aufwendig
+
+Schreibschutz
+	* 64Bit Prozessoren versehen Stack Elemente wie Rücksprungadressen mit einem Schreibschutz
+	* Verhindert den Angriff
+
+
 
