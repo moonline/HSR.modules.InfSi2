@@ -966,6 +966,73 @@ Nein. Keys können nicht zurükgezogen werden. Sie laufen einfach aus.
 ---
 
 
+Network Access Controll
+=======================
+
+116
+---
+Firewalls analysieren Pakete, um bösartige und unerlaubte Pakete auszufiltern.
+
+Statische Paketfilter
+	Filtert anhand des Pakettyps, Ports oder Absenders.
+Statfull Firewalls
+	* Schneiden den Verkehr mit und merken sich für jede Verbindung den Status. Passen Pakete nicht in den üblichen Paketflow, werden sie ausgefiltert.
+	* z.B. darf nie ein DNS Reply vor einem Request kommen
+
+117
+---
+Anhand des Verbindungsstatus wird der Datenverkehr inspiziert. Siehe 116 Statefull Firewalls
+
+
+NAC
+---
+
+118
+...
+L2: switch / access point authentisiert mit IEEE 802.1X
+L3/4: VPN mit IKEv2 oder TLS based
+
+119
+...
+Um den Gesundheitszustand des Clients zu ermitteln werden installierte Programme und Einstellungen überprüft.
+
+120
+...
+block
+	* Ein Gerät wird geblockt und nicht zugelassen
+isolate
+	* Ein Geräte weisst Unregemlmässigkeiten im Gesundheitszustand auf und wird nur in die isolierte Zone zugelassen
+access
+	* Ein Gerät ist in Ordnung und wird ins Netz reingelassen
+
+121
+...
+Network Access Layer
+	Zuerst wird der User authentifiziert
+Integrity Evaluation Layer
+	dann wird sein Gesundheitszustand gemessen
+Integrity Connection Layer
+	die Gesundheitswerte werden an den Server übermittelt, der sie überprüft
+
+122
+...
+Über VPN oder TLS
+
+123
+...
+Bezeichnet den ganzen Vorgang, den Endpunkt einem Gesundheitscheck zu unterziehen.
+
+124
+...
+Ein Access Point, der den gesammten Datenverkehr mitschneidet, korreliert und daraus Angriffe erkennt.
+
+125
+...
+Ein zentraler Metadata Map Service ermöglicht nebst der Messung des Gesundheitszustandes eines einzelnen Clients die Korrelation aller Gesundhetitszusände und des Netzwerkverkehrs und bieten somit eine detailierte Analyse über die komplette Angriffssituation.
+
+126
+...
+Gegen Lieing Endpoints hilft TNC/NAC nicht. Der Client kann dem Server beliebige Messerte vorgaukeln.
 
 
 
