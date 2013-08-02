@@ -949,6 +949,23 @@ Der Browser kann über DNSSEC den RSA Key verifizieren.
 
 112
 ---
+* Das "Root Zertifikat" (das Zertifikat im Zonenfile, mit dem das Zertifikat des Webservers signiert wurde) oder lediglich der Public Key werden über DANE vom DNS Server geladen.
+* Jeder kann damit sein eigenes Root Zertifikat erstellen. Zertifizierungsstellen für Webserverzertifikate werden überflüssig.
+*  Nur derjenige, der das Recht für Änderungen im Zonenfile besitzt, kann auch dort sein Root Zertifikat hinterlegen
+
+113
+---
+* VeriSign (z.B.) zertifiziert den Root Server, durch Signierung des ZSK.
+* Die ICANN generiert mit dem signierten ZSK einen KSK, mit dem sie Root Key Sets signiert.
+
+114
+---
+Nein. Keys können nicht zurükgezogen werden. Sie laufen einfach aus.
+
+115
+---
+
+
 
 
 
