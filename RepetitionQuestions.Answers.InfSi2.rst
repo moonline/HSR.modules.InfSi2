@@ -400,11 +400,10 @@ Data Leak Protection
 51
 .. 
 Egress Controll
-	Daten, die das Unternehmen verlassen werden kontrolliert
+	* Daten, die das Unternehmen verlassen werden kontrolliert
 	* Es wird versucht, keine Daten in unerlaubte Hände fallen zu lassen
 Usage Controll
 	Es wird kontrolliert, was mit den Daten gemacht wird
-	* Es wird kontrolliert, was mit den Daten gemacht wird
 Egress Controll+Usage Controll
 	Die beiden Verfahren können kombiniert werden. In erster Instanz werden die Daten daran gehindert das Unternehmen unerlaubt zu verlassen, in zweiter Instanz wird die unerlaubte Nutzung unterbunden.
 	
