@@ -1189,3 +1189,117 @@ Kreditkarten (spätere Bezahlung)
 * S/Mime Signatur und Verschlüsselung
 * Softwaresignierung
 * VPN Authentication
+
+
+TPM
+===
+
+142
+---
+Trusted Plattform Module.
+
+Ist ein Hardwaremodule, das Keys erzeugen, verschlüsseln, signieren und hashen kann sowie einen Schlüsselspeicher inklusive einem nicht veränderbaren Hardwarekey besitzt.
+
+Das TPM stellt eine nicht unterwanderbare Verschlüsselungskomponente dar, mit deren Signaturen die Echtheit von Identitäten, Schlüsseln oder Software gewährleisten kann.
+
+143
+---
+Crypto Funktionen
+	* RNG
+	* RSA key pair generator
+	* symetric key generator
+	* encryption/signature module RSA
+	* Hashing module SHA-1/HMAC
+
+Geschützter Speicher
+	* EK Endorsmentkey (unique und nicht löschbar)
+	* SRK Storage Root Key
+	* PCR Plattform Config Register (können nur beim Booten gelöscht werden. Später können sie nur einmal beschrieben werden.)
+	* AIK Attest Idendity Keys
+	* flüchtigen Speicher 
+
+144
+---
+Um mit dem TPM den Datenstrom einer Festplatte zu verschlüsseln, müsst das TPM über Gigabit angebunden sein.
+
+Das TPM ist an LPC Bus angeschlossen, weil es ursprünglich für die Absicherung des BIOS gedacht war.
+
+145
+---
+Der Storage Root Key wird benutzt, um sämmtliche andern Schlüssel zu sichern.
+
+Wird der TPM Eigentümer gesetzt, wird der SRK generiert. Wechselt der Eigentümer, so wird ein neuer SRK generiert und der alte gelöscht. Daten, die von SRK geschützten Schlüsseln verschlüsselt wurden, sind somit verloren.
+
+146
+---
+StorK
+	Storage Key, wird zur Verschlüsselung von symetrischen Schlüsseln der Festplattenverschlüsselung benutzt
+BindK
+	Binding Keys, die Software an Hardware binden können.
+AIK
+	Attest Identity Key, wird zur bestätigung der Identität verwendet
+SigK
+	Signaturschlüssel, werden für Signaturen verwendet
+MigrK
+	Wird benutzt um verschlüsselte daten auf ein neues Gerät zu migrieren. Ist das Notebook defekt und es wurde kein MigrK rechtzeitig exportiert, so sind alle Daten verloren.
+SymK
+	Symetrische Keys, werden zur Verschlüsselung von Festplatten etc. genutzt.
+
+147
+---
+Verschlüsselung
+	1) TPM generiert Symetrischen Verschlüsselungskey SymK
+	2) CPU verschlüsselt Datei mit SymK AES (ausserhalb des TPM)
+	3) TMP generiert RSA Key Pair StorK
+		1) PubKey wird zur RSA Verschlüsselung des SymK verwendet
+		2) PriKey wird innerhalb des TPM mit dem SRK-pubkey durch RSA verschlüsselt
+	4) verschlüsselter SymK, PubKey, verschlüsselter PriKey und das verschlüsselte File werden auf der Festplatte abgelegt
+
+Entschlüsselung
+	1) Der PriKey wird innerhalb des TPM mit dem SRK-prikey durch RSA entschlüsselt
+	2) Der SymK wird mit dem PriKey durch RSA entschlüsselt
+	3) Das File wird mit dem SymK über die CPU AES entschlüsselt
+
+Wenn der Storage Key weg ist, lässt sich auch der SymK nicht mehr entschlüsseln. Die Daten sind verloren.
+
+148
+---
+Binding
+	* Software wird an eine bstimmte Voraussetzung, Hardware, Keys gebunden durch symetrische Verschlüsselung.
+	* Bindung funktioniert auch ohne TPM
+	* Mit MigrK ist es möglich, die Plattform zu wechseln -> ist daher nicht wirklich an die Hardware gebunden
+
+Sealing
+	* Software wird über TPM an bestimmte Hardware und Device Zustände (PCR) gebunden.
+	* Sealing kann nur mit "non-migrateable keys" genutzt werden
+	* Die Konfiguration/Zustand der Plattform kann einbezogen werden -> Software startet nur, wenn bestimmte Bedingungen erfüllt (z.B. Webcam off)
+	* Daten können nur entschlüsselt werden, wenn die Plattform sich in einem vertrauenswürdigem Zustand befindet
+
+149
+---
+BIOS speichert Messwerte über das System in den PCR.
+
+SRTM hashed alle Werte und legt diese in PCR0 ab. Das komplette Vertrauen basiert auf PCR0.
+
+PCR0 kann über TNC übermittelt werden, um die Gesundheit des Systems zu beweisen.
+
+150
+---
+Weil das BS zu komplex ist und aus zu vielen Modulen besteht, ist es nicht möglich jedes Modul zu signieren und zu sichern. Vernünftiges Arbeiten wäre nicht mehr möglich.
+
+151
+---
+Beim Bootprozess werden verschiedene System Properties gemessen (z.B. Hash über BIOS, Bootloader, ...) und im PCR abgelegt.
+
+Die PCR Messungen werden zusammengehashed in PCR0.
+
+Das PCR0 kann entweder lokal mit einem älteren Hash verglichen werden oder über TNC an einen Server übermittelt werden, der die Werte mit älteren Vergleicht um sicherzustellen, das das System unverändert ist.
+
+152
+---
+* TPM Key protection für E-mail Verschlüsselung
+* Multi-Faktor Authentifizierung (Something I have)
+* VPN Key Protection
+* Wlan Encryption Key Protection
+
+
