@@ -652,7 +652,7 @@ Layer2/3/4 VPN
 80
 ..
 * Verschlüsselung mit LCP
-* LCP kann auch ohne Verschlüsselung genutzt werden -> keine starke Verschlüsselung
+* LCP kann auch ohne Verschlüsselung genutzt werden -> problematisch
 * L2TP ohne Authentisierung ist anfällig auf Replay Attacken
 
 81
