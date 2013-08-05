@@ -921,7 +921,7 @@ Dadurch gehen sämmtliche Anfragen für diese Zone (z.B. die .net Zone) an den D
 DNSSEC Resource Record Signature
 
 107
---
+---
 * DNS Based Authentication of Naming Entries.
 * Zertifizierung von Websever über DNS SEC.
 
@@ -989,6 +989,7 @@ NAC
 118
 ...
 L2: switch / access point authentisiert mit IEEE 802.1X
+
 L3/4: VPN mit IKEv2 oder TLS based
 
 119
@@ -1000,7 +1001,7 @@ Um den Gesundheitszustand des Clients zu ermitteln werden installierte Programme
 block
 	* Ein Gerät wird geblockt und nicht zugelassen
 isolate
-	* Ein Geräte weisst Unregemlmässigkeiten im Gesundheitszustand auf und wird nur in die isolierte Zone zugelassen
+	* Ein Geräte weisst Unregelmässigkeiten im Gesundheitszustand auf und wird nur in die isolierte Zone zugelassen
 access
 	* Ein Gerät ist in Ordnung und wird ins Netz reingelassen
 
@@ -1042,6 +1043,7 @@ Buffer Overflow
 Entsprechend gestaltete Pakete werden in so grossen Mengen an den Empfänger gesandt, bis die Paketinhalte den Buffer übersteigen und in einen Bereich mit ausführbarem Code geraten. Sobald das Programm diese Programmstelle aufruft, wird der eingeschleuste Code ausgeführt.
 
 **Beispiel**
+
 * Angreifer überflutet Buffer so, das die Adresse zu seinem über Buffer Overflow eingeschleusten Codefragment den Bereich mit der Rücksprungadresse auf dem Stack überschreibt.
 * Sobald die Funktion verlassen wird, wird die kompromitierte Rücksprungadresse aufgerufen und der Code des Angreifers ausgeführt
 * Den Bereich zwischen dem Buffer und der Rücksprungadresse muss der Angreifer mit Müll überschreiben
@@ -1127,11 +1129,11 @@ Dislay Cards können z.B. Einmahl-Tokens für E-banking anzeigen
 
 134
 ---
-Vcc, GND: Speisung, Masse
-RST: Zur Initialisierung. Gibt z.B. Kartentyp zurück
-SWP: Single Wire Prtocoll, zum Beispiel für Kommunikation mit NFC Module
-CLK: Extern zugeführter Takt (Clock)
-AUX: USB
+* Vcc, GND: Speisung, Masse
+* RST: Zur Initialisierung. Gibt z.B. Kartentyp zurück
+* SWP: Single Wire Prtocoll, zum Beispiel für Kommunikation mit NFC Module
+* CLK: Extern zugeführter Takt (Clock)
+* AUX: USB
 
 135
 ---
