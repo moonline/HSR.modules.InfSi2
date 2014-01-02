@@ -29,7 +29,7 @@ Kryptographische Stärke
 
 2
 -
-Definition eines Sets an Verschlüsselungs- Hash- und Signierungsalgorithmen, die eine gleiche Kryptographische Stärke aufweisen, damit es kein schwaches Gleid in der Kette gibt. A definiert sichere Schlüssellängen für die Stufe Vertraulich, B definiert sehr sichere Schlüssellängen für die Stufe Geheim.
+Definition eines Sets an Verschlüsselungs- Hash- und Signierungsalgorithmen, die eine gleiche Kryptographische Stärke aufweisen, damit es kein schwaches Gleid in der Kette gibt. "B Secret" definiert sichere Schlüssellängen für die Stufe Vertraulich, "B Top Secret" definiert sehr sichere Schlüssellängen für die Stufe Geheim.
 
 3
 - 
