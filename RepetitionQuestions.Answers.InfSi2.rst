@@ -711,15 +711,14 @@ IPSec Transport Mode
 ..
 **Mit AH**
 
-* IPSec verschlüsselt den Payload des IP Paketes und authentifiziert das IP Paket.
+* IPSec authentifiziert das IP Paket.
 * Zwischen dem IP Header und dem Payload wird der Authentication Header eingefügt.
 * IPSec ohne Authentsierung ist anfällig auf IP Spoofing oder Package Modification
 * Authentication Header enthält MAC für gesammtes Paket
 
 ::
 
-		| Orig. IP Header | Authentication Header [/// TCP | Payload ///]
-
+	| Orig. IP Header | Authentication Header | TCP | Payload |
 
 **Mit ESP**
 
@@ -728,7 +727,7 @@ IPSec Transport Mode
 
 ::
 
-	| Orig. IP Header | ESP | [/// TCP Paket | Payload | ESP Trailer ///] ESP Authentication |
+	| Orig. IP Header | ESP [/// TCP Paket | Payload | ESP Trailer ///] ESP Authentication |
 
 
 
@@ -963,6 +962,189 @@ Nein. Keys können nicht zurükgezogen werden. Sie laufen einfach aus.
 
 115
 ---
+
+
+
+6 VoIP Security
+===============
+
+6.1 Grundlagen
+--------------
+
+**6.1.1 VoIP Kommunkationsprinzip**
+
+Zwei Channels:
+
+* Signalling Channel, wird benutzt um den andern Kommunikationspartner über einen Serverdienst aufzufinden
+* P2P Media Channel, wird benutzt um direkt zwischen den Teilnehmern Multimedia auszutauschen
+
+::
+
+	sA.tld                                                                       sB.tld
+	SIP Server A  ------------- Signalling Messages (SIP) -------------->  SIP Server B
+	   ^                                 Hop 2                                     |
+	   |                                                                           |
+	   | Hop 1                                                               Hop 3 |
+	   |                                                                           |
+	   |                                                                           v
+	Peer 1  <------------------------ Media Stream (RTP) --------------------->  Peer 2
+	
+	peer1@sA.tld                                                           peer2@sB.tld
+
+
+Sowohl die Verbindung der einzelnen Hops wie der Media Stream sollten verschlüsselt sein
+
+Verbindungsaufbau
+	1) die beiden Peers melden sich bei ihren Servern, sobald sie online sind
+	2) Peer1 sendet eine SIP Message für peer2@sB.tld an sA.tld
+	3) sA.tld sendet die Message weiter, da peer2@sB.tld keiner seiner Kunden ist
+	4) sB.tld sendet die Message an den Client weiter. Die Message enthält eine SDP (Session Description, die Details über den Peer1 liefert)
+	5) Peer2 sendet eine Nachricht zurück an Peer1 auf dem gleichen Weg und ebenfalls mit einer SDP in der SIP Message
+	6) die beiden Peers versuchen sich gegenseitig direkt zu erreichen mit den Informationen aus den SDP's
+	7) Die Peers etablieren die RTP Verbindung
+Verbindungsabbau
+	Geschieht direkt über den P2P Stream
+
+**6.1.2 Channels**
+
+Der P2P Channel kann erst etabliert werden, wenn die beiden Peers IP und Ports für den Stream kennen. Dazu tauschen sie sich über den 2. Channel (Signalingchannel) über einen gemeinsamen Treffpunkt aus.
+
+**6.2.3 SIP Authentisierung**
+
+Damit der Empfänger der Nachricht sicher sein kann, das die Nachricht wirklich vom angegebenen Empfänger stammt und dieser unter der angegebenenen Adresse erreichbar ist. Ansonsten kann die Nachricht auf dem Weg manipuliert werden.
+
+**6.2.4 Verbindungsaufbau**
+
+::
+
+	P1                   SA                    SB                P2
+	|                     |                    |                  |
+	|-------invite------->|                    |                  |
+	|<-----trying---------|------invite------->|                  |
+	|                     |<-----trying--------|-----invite------>|
+	|                     |                    |<----ringing------|
+	|                     |<-----ringing-------|                  |
+	|<-----ringing--------|                    |<-------OK--------|
+	|                     |<-------OK----------|                  |
+	|<-------OK-----------|                    |                  |
+	|                                                             |
+	|----------------------------ACK----------------------------->|
+	|<======================== Media Stream =====================>|
+	|<---------------------------BYE------------------------------|
+	|-----------------------------OK----------------------------->|
+
+	
+**6.1.5 RTP**
+
+Realttime Procotcol. Standard zur Übertragung von Echtzeitstreams. UDP-basiert.
+
+
+6,2 Sicherheit
+--------------
+
+**6.2.1 RTP Übertragungen**
+
+RTP Übertragungen sind nicht verschlüsselt. Der Payloadtype PT beschreibt den Codec des Payloads. Jeder, der die Pakete mitschneidet kann den Stream zusammensetzen und mithören.
+
+**6.2.2 Wireshark**
+
+Da das Wlan unverschlüsselt ist, kann jeder Teilnehmer auch die Pakete der Anderen mitlesen. Mit einer entsprechend konfigurierten Netzwerkkarte werden auch die Pakete der Anderen an die höheren Schichte weitergegeben womit sich die Pakete mit Wireshark mitsniffen lassen.
+
+Wireshark selbst bietet in der Streamanalyse Support für RTP Streams. Einmal ausgewählt lassen sich diese gleich abspielen.
+
+**6.2.3 VLAN**
+
+Keinen. VLAN Hilft nur die QoS für VoIP Verkehr zu gewährleisten und die Pakete in einem eigenen Subnet verkehren zu lassen.
+
+Wer auf der Trunkleitung sitzt kann alles mitschneiden.
+
+**6.2.4 SRTP**
+
+Die effektiven Streamdaten sind verschlüsselt, Header, Streamidentifier und timestamp sind authentifieziert.
+
+::
+
+	<--------------------- authenticated -------------------------->
+	| Header | timespamp | SSRC | CSRC [/// RTP Payload, Padding ///] (MKI) | Authentiction Tag |
+	
+	<------------- authenticated -------------->
+	| Header [/// sender info, report blocks ///] SRTCP index | (MKI) | Authentication Tag |
+	
+	
+* SSRC: synchronization source identifier
+* CSRC: contributing source identifiers
+* MKI: Masterkey identifiert (optional)
+
+**6.2.5 Payload Verschlüsselung**
+
+Aus dem saltKey, SSRC und packetIndey als Initialisierungsbektor wird mit dem encryptionKey ein AES-CTR Cipherstream generiert, der mit dem Payload xor verknüpft wird.
+
+**6.2.6 Authentisierung**
+
+Der Payload wird SHA1 gehashed (HMAC) mit dem authenticationKey und dieser als Authentication Tag als letzen Teil in das Paket eingefügt.
+
+**6.2.7 Masterkey**
+
+Den Masterkey besitzen beide Teilnehmer. Aus ihm werden die Sessionkeys wie authenticationKey oder encryptionKey generiert.
+
+**6.2.8 Masterkey exchange**
+
+In SDP, TLS gesicherte SIP übertragung
+	Nachteil: die Clients müssen TLS unterstützen und der Key ist jeweils nur zwischen den Hops verschlüsselt. Auf den SIP Servern selbst nicht. Damit könnte der SIP Provider die Peerkommunikation entschlüsseln.
+In SDP, MIKY (Multiedia Internet Keying)
+	* Garantiert eine effektive P2P Verschlüsselung und wird auch innerhalb der SDP übertragen.
+	* Varianten
+		* RSA: Der mit dem Public Key verschlüsselte Schlüssel wird nebst ID und Signatur in der SDP mitgesendet
+		* DH: Die Parameter für die DH Schlüssel etablierung werden nebst ID und Zertifikat in der SDP mitgesendet
+	
+**6.2.9 Session Keys**
+
+Aus dem Initialisierungsvektor (salt, label, packet index) und dem masterkey wird mit AES-CTR ein Keyblock generiert, der in encryptionKey, authenticationKey ud saltKey aufgeteilt wird.
+
+**6.2.10 Tunneling über IPsec**
+
+Vorteile
+	* Mediastream P2P Verschlüsselt
+	* Befinden sich die SIP Server innerhalb des Unternehmens, so ist auch  Kommunikation des Signallingchannels verschlüsselt, wenn der Client über einen IPsec Tunnel dem Unternehmen angegliedert ist
+Nachteile
+	* Viel Oberhead
+	
+	
+6.3 Sicherer Verbindungsaufbau
+------------------------------
+
+**6.3.1 SPIT**
+
+Spam over Internet Telephony. Kennt ein Spambot die sip Adresse des Empfängers, so kann er ihm voice-spam versenden.
+
+Benutzer würden dauernd mit Werbe-Anrufanfragen oder sogar Werbesnippets im Stream genervt.
+
+**6.3.2 Missbrauch**
+
+* SIP Messages umleiten
+* Dos Attacks
+* Problem -> SIP Messages sind nicht authentifiziert und verschlüsselt, auch die Server nicht
+
+**6.3.3 Absicherung Session Management**
+
+* S/MIME (PKI authentication), zuverlässig
+* TLS (PKI authentication), SIP Applikationen müssen TLS unterstützen
+* IPsec (PKI authentication), Vertrauen liegt auf den Proxies
+
+**6.3.4 Verschlüsselung**
+
+* Clients wie Server bräuchen Private/Public Keys und Zertifikate.
+* Die Messages könnten nur von denjenigen gelesen werden, die auch wirklich sollen
+* Schlüsselmanagement wäre ein Albtraum. Die Server müssten an die Public Keys der Clients kommen und umgekehrt.
+
+**6.3.4 DomainKeys**
+
+Die MIKEY Messages werden verschlüsselt. Für Encryption und Authentication ist jeweils ein Lookup auf den DNS Server notwendig um den Key zu erhalten.
+
+**6.3.5 Skype**
+
+Skype verwendet zwar eine starke Verschlüsselung, durch die geschlossene Implementierung kann die effektive Sicherheit jedoch nicht überprüft werden.
+
 
 
 Network Access Controll
