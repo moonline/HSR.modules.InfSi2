@@ -14,22 +14,22 @@ Kryptographische Stärke
 +-------------------+--------------------+----------+--------------------+
 | Crypt. System     | Rec. Algorithmus   | Key Size | True Strength      |
 +===================+====================+==========+====================+
-| Symetric Encr.    | AES                | 256      | 220                |
+| Symetric Encr.    | AES                | 128      | 128                |
 +-------------------+--------------------+----------+--------------------+
-| Hash              | SHA3 384           | 384      | 256                |
+| Hash              | SHA2 256           | 256      | 128                |
 +-------------------+--------------------+----------+--------------------+
-| Key Exchange      | DH                 | 2048     | 256                |
+| Key Exchange      | DH                 | 256      | 128                |
 +-------------------+--------------------+----------+--------------------+
-| Digit. Signature  | RSA                | 2048     | 256                |
+| Digit. Signature  | RSA                | 3072     | 128                |
 +-------------------+--------------------+----------+--------------------+
-| Public Key Enc.   | RSA, El Gamal      | 2048     | 256                |
+| Public Key Enc.   | RSA, El Gamal      | 3072     | 128                |
 +-------------------+--------------------+----------+--------------------+
 | User Password     |                    | 22       | 128                |
 +-------------------+--------------------+----------+--------------------+
 
 2
 -
-Definition eines Sets an Verschlüsselungs- Hash- und Signierungsalgorithmen, die eine gleiche Kryptographische Stärke aufweisen, damit es kein schwaches Gleid in der Kette gibt. A definiert sichere Schlüssellängen für die Stufe Vertraulich, B definiert sehr sichere Schlüssellängen für die Stufe Geheim.
+Definition eines Sets an Verschlüsselungs- Hash- und Signierungsalgorithmen, die eine gleiche Kryptographische Stärke aufweisen, damit es kein schwaches Gleid in der Kette gibt. "B Secret" definiert sichere Schlüssellängen für die Stufe Vertraulich, "B Top Secret" definiert sehr sichere Schlüssellängen für die Stufe Geheim.
 
 3
 - 
