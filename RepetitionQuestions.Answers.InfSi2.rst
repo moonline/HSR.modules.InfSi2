@@ -611,6 +611,20 @@ Rückweg:
 * Server erhält Anfrage und meldet sich bei Rendez-Vous Server
 * Kommunikation läuft über Rendez-Vous Server
 
+**74 Hidden Services Ergänzung**
+
+1) Server S publiziert eine Reihe von Introductionpoints in Forum
+2) S generiert ein RSA Schlüsselpaar und hinterlegt den PubKey bei den Introduction Points
+3) Client C wählt einen der Introductionpoints und einen beliebigen Rendevouzpoint RP
+4) C erzeugt einen DH Factor, packt ihn mit den Verbindungsdaten (RP), der Nachricht und einem Rendezvouscookie zusammen und verschlüsselt das ganze mit den PubKey von S
+5) Das Paket wird vom Introductionpoint an S übertragen
+6) C verbindet sich zum RP und übergibt diesen das Rendezvouscookie
+7) S verbindet sich zum RP und übergibt ebenfalls das Cookie
+8) Durch das Cookie weiss der RP, das er die Verbindung von S und C verknüpfen kann
+9) S sendet einen DH Factor
+10) Mit den DH Factoren erzeugen S und C einen Schlüssel, mit dem Sie die P2P Kommunikation verschlüsseln
+11) Die Kommunikation läuft über den RP, ist jedoch komplett verschlüsselt
+
 75
 ..
 Aufgrund des Exit Knotens und Javascript Eigenschaften, die der Browser ausplaudert.
@@ -1144,6 +1158,347 @@ Die MIKEY Messages werden verschlüsselt. Für Encryption und Authentication ist
 **6.3.5 Skype**
 
 Skype verwendet zwar eine starke Verschlüsselung, durch die geschlossene Implementierung kann die effektive Sicherheit jedoch nicht überprüft werden.
+
+
+
+9 IDS
+=====
+
+**9.0.1 Intrusion Detection System**
+
+* IDS versuchen Angriffe zu erkennen un können je nach Konfiguration Alarmieren oder blockieren.
+* Firewalls sind ledigleich Paketfilter die Pakete und Paketflüsse überwachen und nicht erlaubte Pakete ausfiltern.
+
+
+**9.0.2 IDS Ziele**
+
+* Überwachen des Netzwerk / der Systeme um Angriffe zu detektieren
+* Legitime von nicht legitimen Aktivitäten unterscheiden und Alarmieren
+
+
+**9.0.3 HIDS & NIDS**
+
+HIDS
+	* Host based IDS
+	* Installiert auf den Hosts, überwachen deren Aktivitäten
+NIDS
+	* Network IDS
+	* Installiert am Netzwerk, überwachen die Aktivitäten auf dem Netz
+	
+
+**9.0.4 Begriffe**
+
+Sensor
+	Sammelt Daten und Aktivitäten
+Event
+	Aktivitäten lösen Events aus. Events werden vom Sensor an das System gesendet, das alle Aktivitäten zusamenzieht.
+Alert
+	Alarmierung, falls Aktivitäten den definierten Regeln entsprechen und gehandelt werden muss
+Correlation Engine
+	Sammelt alle Events und zieht Eventübergreifende Schlüsse aus den Daten
+Management Console
+	Zugang für Administratoren um das IDS zu konfigurieren und dessen Status zu überwachen
+False Positive
+	Falscher Alarm. 
+False Negative
+	Nicht detektierter Alarm Angriff -> problematisch
+	
+	
+**9.0.5 HIDS**
+
+::
+
+	              DMZ                       Int. Net
+	   |   |                      |   |                       [ C ] [ C ] [ C ]
+	-- | F | --- [ S ] [ S ] ---- | F | ----------------   [ C ] [ C ] [ C ] [ C ]
+	   |   |        [ S ]   \     |   |                       [ S ] [ S ] [ S ]
+	                         E           ,-----Events------´
+	                          v          v
+	                        [ Correlation ]
+
+
+* Die Sensoren sind direkt auf den Hosts installiert (Server S, Clients C)
+* Die Events werden auf einem Correlation System gesammelt
+* Analysiert werden Host-interne Vorgänge: Pfad aufrufe, Netzwerkpaketinhalte, Execution Time, ...
+
+
+**9.0.6 NIDS**
+
+::
+
+	              DMZ                           Int. Net
+	   |   |                          |   |                          [ C ] [ C ] [ C ]
+	-- | F | --[#]-- [ S ] [ S ] ---- | F | --[#]--------------   [ C ] [ C ] [ C ] [ C ]
+	   |   |     \       [ S ]        |   |   /                      [ S ] [ S ] [ S ]
+	              `---------.            ,---´ Events
+	           Event         v          v
+	                        [ Correlation ]
+
+
+* Die Sensoren sitzen im Netzwerk
+* Die Events werden auf einem Correlation System gesammelt
+* Analysiert werden Netzwerkpakete und Inhalte (unverschlüsselte), Traficstatistiken, ...
+
+
+**9.0.7 HIDS vs NDIS**
+
+HIDS
+	(+)
+		* Lesen von verschlüsselten Paketinhalten
+		* Erkennt Modifikationen an den Systemen selbst
+	(-)
+		* Eingeschränkte Sicht (nur Host)
+		* Viel Monitoring Trafic
+		* Nicht versteckbar -> angreifbar
+		* Sensoren nach Angriff möglicherweise kompromitiert
+NIDS
+	(+)
+		* Erkennt Systemübergreifende Angriffe
+		* Kein Monitoring Trafic auf den Hosts
+		* Sensoren können gut versteckt und geschützt werden (e.g. Sensors without IP address)
+	(-)
+		* Problemen mit verschlüsselten Daten
+		* Zusätzliche Hardware notwendig
+		* Probleme mit viel Trafic
+
+
+**9.0.8 Hybrid IDS**
+
+Das Hybrid IDS zieht Daten von HIDS und NIDS zusammen und kann so die breitere Menge von Daten einsehen, kämpft allerdings auch mit den Nachteilen von beiden.
+
+
+9.1 IDS Configuration & Operation
+---------------------------------
+
+**9.1.1 IDS Configuration Goals**
+
+* So wenig Falsche Alarme wir möglich, Keine nicht detektierten Attacken
+* Möglichst gute Performance
+* Definition einer Policy
+
+
+**9.1.2 Signaturen & Anomaly Detection**
+
+Signaturen
+	* Das IDS bezieht von einer Signaturdatenbank regelmässig "Fingerabdrücke" von Angriffen * Die Signaturen werden mit Aktivitäten im System verglichen. Stimmen Signaturen überein, so wurde eine potentielle Attacke gefunden.
+Anomaly Detection
+	* Die Administratoren analysieren das System und definieren "Normales Verhalten".
+	* Detektiert das IDS Verhalten, das von "normalen" abweicht, so schlägt es Alarm
+	
+	
+**9.1.3 Signaturen**
+
+* Die Signaturen werden von einem Signaturdienstleister bezogen
+* Die Signaturen hinken den Angriffsmethoden immer hinterher, erst eine erfolgreich detektierte und analysierte Attacke liefert überhaupt Daten für eine Signatur, die der Anbieter in seine Datenbank aufnehmen kann
+
+
+**9.1.4 Anomaly Detection**
+
+* "Normales Verhalten" ist in jedem System unterschiedlich und kann darum nicht als Schema von einem Anbieter bezogen werden
+* Erfordert eine genaue Analyse des Systems, was überhaupt "Normales Verhalten" darstellt.
+
+
+**9.1.5 Protocol Anomaly Detection**
+
+* Detektieren von nicht-standard getreuen Protokollen
+* Das manipulieren von Protokollen kann als Angriff verwendet werden
+* Beispiel: ein Protokoll besitzt ein Feld für einen RPC Call. Durch Einschieben eines eigenen Feldes kann möglicherweise ein beliebiger Call ausgeführt werden, von aussen sieht das Paket allerdings intakt und korrekt aus.
+
+
+**9.1.6 HIDS Beispiele**
+
+a) Number of failed logins: Statistiken über fehlgeschlagene Login Versuche bei Hosts werden analysiert -> ausreisser -> alarm
+b) execution path profiling: Ausführungspfad auf Host wird analysiert -> ein ungewöhnlicher Pfad wird ausgeführt -> Alarm
+
+
+**9.1.7 Trafic Statistiken**
+
+* Durch Sammeln von Eigenschaften von Netzwerkverkehr und statistische Auswertung kann abnormales Verhalten festgestellt werden. Z.B:
+	* Anzahl von Paketen, z.B. ICMP
+	* Antwortzeiten
+	* herkunfts- / Zieladressen
+* Verändert sich das Verhalten des ausgehenden Datenverkehrs eines Hosts (z.B. viel mehr ICMP Ping Pakete), so besteht die Wahrscheinlichkeit, das der Host infiziert wurde.
+
+
+9.2 IDS Responses
+-----------------
+
+**9.2.1 Alert Reaction**
+
+* Nichts tun
+* manual Intervation (slow)
+* Automated Intervention (Firewall adaption (Blocking, Filtering), Connection Reset)
+* Vorbeugen: Verhindern, das ungewollter Verkehr überhaupt sein Zielsystem überhaupt erreicht
+
+
+**9.2.2 Responses**
+
+a) TCP Reset
+	* Verbindung wird abgebrochen
+	* Angreifer kann Verbindung wieder aufbauen
+	* Hilft nur für Fire-And-Forget Angriffe
+b) Block Attacker
+	* Funktionert nur, wenn Attacker fixe IP hat
+	* Gegen DDoS Attacke machtlos
+	
+	
+**9.2.3 Schwächen***
+
+* Schützen nicht gegen "Single packet attacks", da das Paket seinen Zielhost erreicht hat, bevor des analysiert wurde.
+* IDS Responses sind grundsätzlich zu langsam, weil sie den Verkehr nur überwachen und ANSCHLIESSEND reagieren.
+
+
+9.3 IPS
+-------
+
+**9.3.1 IPS**
+
+Pakete werden gepuffert, analysiert und erst wenn sie in Ordnung sind, an den Zielhost weitergeleitet.
+
+
+**9.3.2 Single packet attacks**
+
+* Im Unterschied zu IDS fliessen Pakete nicht am Sensor vorbei, sondern durch den Sensor
+* IPS schützt gegen "Single packet attacks*, da Pakete nur zum Ziel gelangen, wenn sie die Policy erfüllen und keine Bedrohung darstellen.
+
+
+**9.3.4 Limitationen**
+
+* IPS Systeme führen zu einer Verzögerung der Pakete
+* IPS Systeme kommen bei viel Trafic ans Limit
+* Pakete können nur für eine kurze Zeit blockiert werden um zu verhindern, das legitimierte Kommunikation stark verzögert wird
+* Falscher Alarm sperren unschuldige Nutzer aus
+
+
+9.4 IDS Evasion Techniques
+--------------------------
+
+**9.4.1 Angriffsstrategien**
+
+* Pakete werden so aufgebaut, das sie vom IDS anders wahrgenommen werden als der Empfänger sie interpretiert. -> Encoding, Compression, ...
+
+
+**9.4.2 Angriffsstrategien Details**
+
+a) Fragmentation: Das Paket wird so fragmentiert, das der Angriff auf mehrere Pakete verteilt ist. Das IDS befindet die einzelnen Pakete für harmlos, doch sobald der Client sie zusammensetzt, entsteht wieder die ursprüngliche Attacke. Zu Fragmentation gehören auch:1 
+	* Paketreihenfolge vertauschen
+	* Pakete überlappend gestalten (Duplikate)
+b) Encoding
+	I) UTF-7, Base64: Angriffscode wird mit einem Encoding codiert, das die anzugreifende Software zwar kennt, aber nicht standardmässig eingestellt ist. Entsprechend wird der Schadcode vom IDS nicht als solchen erkannt.
+	II) HTTT Encoding "chunked": HTTP Daten werden in kleinen Paketen (Chunks) gesendet, dadurch wird der Content in viele kleine Pakete aufgeteilt.
+	III) Compression: Durch Kompression kann ein IDS den ursprünglichen Code nicht mehr erkennen
+	
+Um Fragmentations- oder Encoding-Angriffe aufzudecken, muss das IDS den TCP Stream zusammmensetzen und entcodieren.
+
+
+9.5 Snort IDS
+-------------
+
+**9.5.1 Snort IDS**
+
+Snort ist ein sehr flexibles IDS/IPS, das für viele Plattformen verfügbar ist.
+
+
+**9.5.2 Snort Modi**
+
+a) sniffer: Packete werden mitgelesen und angezeigt
+b) logger: Packete werden geloggt
+c) IDS: Packet Analyse
+d) inline: IPS
+
+
+**9.5.3 Preprocessors**
+
+Preprocessors verarbeiten Packetströme, damit sie überhaupt analysiert werden können. So hängen Preprocessors z.B. TCP Streams zusammen und Encoden Packetinhalte.
+
+
+**9.5.4 Rules**
+
+Rules besitzen einen Header und Options.
+
+* Der Header definiert, für Welche Pakete die Rule überhaupt gilt sowie welche Action (log, alert) ausgeführt werden soll
+* Die Options definieren die Action-message (z.B. Log Nachricht) und Detailinfos, welche Packetteile analysiert werden sollten und wie
+
+
+**9.5.5 Rule Header**
+
+* Action
+* Protokolls
+* Address(es/range)
+* Ports
+* Flow direction
+
+
+**9.5.6 Rule Optionen**
+
+a) msg: Log/Alert Message
+b) reference: Referenz Vulerability (ext. Vul. id System)
+c) gid: Generator id (Snort compontent that generated the event)
+d) sid: unique rule identifier
+e) rev: Rule version
+f) priority: Priorität der Action
+
+
+**9.5.7 Payload Detection Rule Options**
+
+a) content: Content to match
+b) nocase: Ignoriere Fälle vorheriger Optionen
+c) http_client, http_uri: Matching auf content oder url einschränken
+d) pcre: Content regex matching
+
+
+**9.5.8 Header File Detection Rule Options**
+
+a) IP header: IP options wie fragoffset, ttl, tos, id, ...
+b) TCP header:  TCP flags, seq, ack, window
+c) ICMP header: ICMP options wie ltype, icode, ...
+d) flow: Pakete in spezifischer Richtung: to_client oder to_server
+e) samelp: sender und dest. IP sind gleich -> Regeln werden nur dann angewendet
+
+
+**9.5.9 Port Scans**
+
+::
+
+	preprocessor afportscan: ...
+
+
+**9.5.10 Encoding Handling**
+
+::
+
+	... uricontent: "somePathToMatch"; ...
+	
+	
+* Klappt nur mit uricontent -> wird durch HTTP inspect Preprocessor geschickt.
+* Mit content klappt dies nicht! Content wird nicht decoded!
+
+**9.5.11 Snort Reactives**
+
+* TCP reset versenden zum schliessen von Verbindungen
+* host unreachable versenden statt den Verkehr an den Host senden
+* über Erweiterungen
+	* Firewall Rules dynamisch anpassen
+
+
+**9.5.12 BASE**
+
+Basic Analysis and Seciroty Engine erweitert Snort um Alert Analyse inkl. Grafischem Frontent.
+
+
+**9.5.13 Snort inline**
+
+Snort läuft im inline Mode als IPS. 
+
+
+**9.5.14 Real Time Alerting**
+
+Nur über log file analyse tools, die anschliessend alerts ausführen.
+
+
+**9.5.15 Nessus Scan**
+
+Security scanner um Schwachstellen und offene Ports aufzudecken.
 
 
 
