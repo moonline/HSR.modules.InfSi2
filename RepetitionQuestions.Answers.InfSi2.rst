@@ -1841,3 +1841,98 @@ Das PCR0 kann entweder lokal mit einem älteren Hash verglichen werden oder übe
 * Wlan Encryption Key Protection
 
 
+14 Virtualization
+=================
+
+14.1 Secure Boot
+----------------
+
+**14.1.1 Platform Key**
+
+Bei aktiviertem Secure Boot erlaubt es der Platform Key vom "Setup Mode" in den "User Mode" zu wechseln. Im User Mode werden nur Treiber und Loader gestartet, die mit dem PK signiert sind.
+
+
+**14.1.2 Key Exchange Keys**
+
+Erlaubt das Ändern der Einträge in der allowed und forbidden DB, vor Allem das Eintragen von andern Zertifikaten. Der KEK muss mit dem PK signiert sein.
+
+
+**14.1.3 Allowed DB**
+
+In der Allow DB werden Zertifikate von Software Signierungsstellen gespeichert. Im Secure Boot Mode können nur von diesen Stellen signierte Module gestartet werden. Zusätzlich können Hashes von erlaubten Modulen gespeichert werden.
+
+
+**14.1.4 Firbidden DB**
+
+Nicht erlaubte Zertifikate oder Module.
+
+
+14.2 Virtualization
+-------------------
+
+**14.2.1 Schtzzonen**
+
+Ring 3
+	* Applikationen
+	* Wenige Privilegien
+Ring 2
+	* Geräte Treiber
+Ring 1
+	* Geräte Treiber
+Ring 0
+	* Kernel
+	* Alle Privilegien
+	
+
+**14.2.2 Hypervisor**
+
+native Hypervisor Virtualization
+	* Läuft direkt auf der Hardware
+	* Benötigt selbst Hardwaretreiber
+	* Läuft in Ring 1
+hosted Hypervisor Virtualization
+	* Läuft oberhalb eines OS
+	* Benötigt deutlich mehr Resourcen
+	* Steuert Hardwäre über BS an
+
+
+**14.2.3 Trusted Virtual Host**
+
+Auf jedem Host läuft ein über TPM abgesicherter virtueller Host. Durch das TPM kann dem Host vertraut werden. Das TPM garantiert, das der Virtuelle Host nicht kompromitiert ist über die Hashwerte der Module die es gespeichert hat.
+
+
+**14.2.4 TXT**
+
+Die Intel Trusted Execution Technology fasst mehrere Technologien zusammen um eine vertrauenswürdige Ausführungsplattform zu schaffen.
+
+MLE
+	Messungen der Module und deren Konfiguration gespeichert in TPM Registern garantieren eine "Dynamic Root of Trust for Measurement". Die Kommunikation zwischen Messsystem und TPM wird ebenfalls abgesichert.
+AC Modules
+	Signierte AC Module werden authentisiert vor dem Ausführen
+
+Mit all diesen Massnahmen soll garantiert werden können, das eine Software oder ein BS nicht kompromitiert wurde.
+
+
+14.3 Separation
+---------------
+
+**14.3.1 ARM TrustZone Technology**
+
+Aufteilung der Architektur des Prozessors in eine gewöhnliche und eine Sicher Ausführungsumgebung. In der sicheren Ausführungsumgebung können nur "Trusted Applications" ausgeführt werden. Diese werden über ein Secure OS und nicht über das normale Embeded OS ausgeführt.
+
+
+**14.3.2 GlobalPlatform Truested Execution Environment**
+
+Fast gleich wie ARM TrustZone Technology. Secure OS Applications können einfach von einem System ins andere übertragen werden.
+
+
+**14.3.3 Muen Separation Kernel**
+
+Ein Mikrokernel für Nativ Virtualization, der native Support für Subject Monitor, Crypto Technik und Intel VT Technology bietet.
+
+
+**14.3.4 Qubes OS**
+
+Open Source OS, basierend auf dem Linux Kernel, das mit Virtualisierung verschiedene Ausführungsräume für Applikationen schafft und so verhindert, das eine fehlerhafte Applikation eine andere komprmitieren kann.
+
+

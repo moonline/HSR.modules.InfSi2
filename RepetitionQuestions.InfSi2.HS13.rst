@@ -257,3 +257,76 @@ Wie kann mit Snort "Real Time Alerting" umgesetzt werden?
 Was ist ein Nessus Scan?
 
 
+
+14 Virtualization
+=================
+
+14.1 Secure Boot
+----------------
+
+**14.1.1 Platform Key**
+
+Wozu dient der Platform Key?
+
+
+**14.1.2 Key Exchange Keys**
+
+Wozu dient der KEK?
+
+
+**14.1.3 Allowed DB**
+
+Was wird in der Allowed DB gespeichert? Welche Module können im Secure Boot mode gestartet werden?
+
+
+**14.1.4 Firbidden DB**
+
+Was wird in der Forbidden DB gespeichert?
+
+
+14.2 Virtualization
+-------------------
+
+**14.2.1 Schtzzonen**
+
+Welche Programme laufen in welchem Mode/Protection Ring? Wie verändert sich die Privilegierung vom äussersten zum innersten Ring?
+
+
+**14.2.2 Hypervisor**
+
+Erklären Sie den Unterschied zwischen native Hypervisor Virtualization und hosted Hypervisor Virtualization. in welchem Ring läuft der Hypervisor?
+
+
+**14.2.3 Trusted Virtual Host**
+
+Wie können mit TPM und Virtualisierung vertrauenswürdige Hosts aufgebaut werden?
+
+
+**14.2.4 TXT**
+
+Was ist die Intel "Trusted Execution Technology" TXT? Was sind "Measured Launched Environments" und "Authenticated Code Modules"? Wozu werden diese Technologien verwendet?
+
+
+14.3 Separation
+---------------
+
+**14.3.1 ARM TrustZone Technology**
+
+Wie funktioniert die ARM TrustZone Technology?
+
+
+**14.3.2 GlobalPlatform Truested Execution Environment**
+
+Was ist das GlobalPlatform Truested Execution Environment?
+
+
+**14.3.3 Muen Separation Kernel**
+
+Was ist der Muen Separation Kernel?
+
+
+**14.3.4 Qubes OS**
+
+Welcher Grundgedanke steckt hinter Qubes OS?
+
+
